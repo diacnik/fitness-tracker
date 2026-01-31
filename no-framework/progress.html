@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Progress</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="workouts.html">Workouts</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="progress.html" class="active">Progress</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>Your Progress 📊</h1>
+        <p>Track your achievements and weekly highlights</p>
+    </div>
+
+    <div class="container">
+        <!-- Current Streak -->
+        <div class="streak-display">
+            <div class="fire-emoji">🔥</div>
+            <div class="streak-number">7</div>
+            <div class="streak-label">Day Streak</div>
+            <p style="margin-top: 1rem; opacity: 0.9;">Your longest streak: 14 days</p>
+        </div>
+
+        <!-- Weekly Highlights -->
+        <div class="card">
+            <h2>This Week's Highlights 🌟</h2>
+            <div class="grid grid-2">
+                <div class="highlight-card">
+                    <div class="description">Personal Best</div>
+                    <div class="achievement">80kg</div>
+                    <div class="description">Bench Press</div>
+                </div>
+                <div class="highlight-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="description">Longest Run</div>
+                    <div class="achievement">8.5km</div>
+                    <div class="description">New Distance Record</div>
+                </div>
+                <div class="highlight-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <div class="description">Total Workouts</div>
+                    <div class="achievement">6</div>
+                    <div class="description">This Week</div>
+                </div>
+                <div class="highlight-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <div class="description">Total Time</div>
+                    <div class="achievement">4.5h</div>
+                    <div class="description">Training Hours</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Bests -->
+        <div class="card">
+            <h2>Personal Bests 🏆</h2>
+            <div class="grid">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Bench Press</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">80kg</div>
+                    <p style="color: #666; font-size: 0.9rem;">Set on Jan 29, 2026</p>
+                    <p style="color: #28a745; margin-top: 0.5rem; font-weight: 600;">↑ 5kg improvement</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Squats</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">100kg</div>
+                    <p style="color: #666; font-size: 0.9rem;">Set on Jan 27, 2026</p>
+                    <p style="color: #28a745; margin-top: 0.5rem; font-weight: 600;">↑ 10kg improvement</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Deadlift</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">120kg</div>
+                    <p style="color: #666; font-size: 0.9rem;">Set on Jan 25, 2026</p>
+                    <p style="color: #28a745; margin-top: 0.5rem; font-weight: 600;">↑ 15kg improvement</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cardio Records -->
+        <div class="card">
+            <h2>Cardio Records 🏃</h2>
+            <div class="grid grid-2">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Longest Run</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">8.5km</div>
+                    <p style="color: #666; font-size: 0.9rem;">Set on Jan 30, 2026</p>
+                    <p style="color: #666; margin-top: 0.5rem;">Time: 52 minutes</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Fastest 5K</h3>
+                    <div style="font-size: 2rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">28:45</div>
+                    <p style="color: #666; font-size: 0.9rem;">Set on Jan 24, 2026</p>
+                    <p style="color: #28a745; margin-top: 0.5rem; font-weight: 600;">↓ 1:30 faster</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Summary -->
+        <div class="card">
+            <h2>Weekly Summary</h2>
+            <div class="grid grid-3">
+                <div class="stat-card">
+                    <div class="label">Total Workouts</div>
+                    <div class="number">6</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Total Time</div>
+                    <div class="number">4.5h</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Calories Burned</div>
+                    <div class="number">2,450</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Workout Distribution</h3>
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Strength Training</span>
+                        <span style="font-weight: 600;">3 workouts</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%; background: #667eea;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Cardio</span>
+                        <span style="font-weight: 600;">2 workouts</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%; background: #4facfe;"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>HIIT</span>
+                        <span style="font-weight: 600;">1 workout</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 17%; background: #43e97b;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Progress -->
+        <div class="card">
+            <h2>January 2026 Overview</h2>
+            <div class="grid grid-2">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Total Workouts</h3>
+                    <div style="font-size: 2.5rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">24</div>
+                    <p style="color: #28a745; font-weight: 600;">↑ 20% vs December</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Total Time</h3>
+                    <div style="font-size: 2.5rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">18h</div>
+                    <p style="color: #28a745; font-weight: 600;">↑ 3h vs December</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Avg per Week</h3>
+                    <div style="font-size: 2.5rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">5.5</div>
+                    <p style="color: #666;">workouts per week</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem;">Consistency</h3>
+                    <div style="font-size: 2.5rem; font-weight: bold; color: #764ba2; margin: 0.5rem 0;">87%</div>
+                    <p style="color: #666;">goal completion rate</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white;">Recent Achievements 🎉</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔥</div>
+                    <strong>7-Day Streak!</strong>
+                    <p style="opacity: 0.9; margin-top: 0.25rem;">Keep the momentum going</p>
+                </li>
+                <li style="margin-bottom: 1rem; padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💪</div>
+                    <strong>New Bench Press PR!</strong>
+                    <p style="opacity: 0.9; margin-top: 0.25rem;">Hit 80kg - that's a 5kg improvement</p>
+                </li>
+                <li style="padding: 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px;">
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🏃</div>
+                    <strong>Distance Champion!</strong>
+                    <p style="opacity: 0.9; margin-top: 0.25rem;">Ran 8.5km - your longest run yet</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
