@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Dashboard</a></li>
+            <li><a href="workouts.html">Workouts</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="progress.html">Progress</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>Welcome Back! 💪</h1>
+        <p>Keep up your amazing progress</p>
+    </div>
+
+    <div class="container">
+        <!-- Streak Display -->
+        <div class="streak-display">
+            <div class="fire-emoji">🔥</div>
+            <div class="streak-number">7</div>
+            <div class="streak-label">Day Streak</div>
+            <p style="margin-top: 1rem; opacity: 0.9;">You're on fire! Keep it going!</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-3">
+            <div class="stat-card">
+                <div class="label">Total Workouts</div>
+                <div class="number">42</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Active Goals</div>
+                <div class="number">5</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">This Week</div>
+                <div class="number">6</div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <h2>Recent Workouts</h2>
+            <ul class="workout-list">
+                <li class="workout-item">
+                    <div>
+                        <h4>Upper Body Strength</h4>
+                        <p>Today • 45 minutes • 8 exercises</p>
+                    </div>
+                    <span>✅</span>
+                </li>
+                <li class="workout-item">
+                    <div>
+                        <h4>Cardio Blast</h4>
+                        <p>Yesterday • 30 minutes • 5 exercises</p>
+                    </div>
+                    <span>✅</span>
+                </li>
+                <li class="workout-item">
+                    <div>
+                        <h4>Leg Day</h4>
+                        <p>2 days ago • 50 minutes • 10 exercises</p>
+                    </div>
+                    <span>✅</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Active Goals -->
+        <div class="card">
+            <h2>Active Goals</h2>
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Workout 5 times this week</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%;">4/5</div>
+                </div>
+            </div>
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Run 20km this month</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;">13/20km</div>
+                </div>
+            </div>
+            <a href="goals.html" class="btn">View All Goals</a>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <h2>Quick Actions</h2>
+            <a href="workouts.html" class="btn">Start a Workout</a>
+            <a href="workouts.html#create" class="btn btn-secondary">Create New Routine</a>
+            <a href="goals.html#new" class="btn btn-secondary">Set New Goal</a>
+        </div>
+    </div>
+</body>
+</html>

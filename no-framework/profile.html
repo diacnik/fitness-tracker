@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="workouts.html">Workouts</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="progress.html">Progress</a></li>
+            <li><a href="profile.html" class="active">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>My Profile 👤</h1>
+        <p>Manage your account and preferences</p>
+    </div>
+
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="card">
+            <div class="profile-header">
+                <div class="avatar">JD</div>
+                <h2>John Doe</h2>
+                <p style="color: #666; margin-bottom: 1rem;">john.doe@email.com</p>
+                <p style="color: #667eea; font-weight: 600;">Member since December 2025</p>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="card">
+            <h2>Your Stats</h2>
+            <div class="grid grid-3">
+                <div class="stat-card">
+                    <div class="label">Total Workouts</div>
+                    <div class="number">42</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Current Streak</div>
+                    <div class="number">7🔥</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Goals Completed</div>
+                    <div class="number">3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="card">
+            <h2>Personal Information</h2>
+            <form>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" value="John">
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" value="Doe">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="john.doe@email.com">
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" value="28">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" value="75">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm)</label>
+                    <input type="number" id="height" value="175">
+                </div>
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        </div>
+
+        <!-- Fitness Preferences -->
+        <div class="card">
+            <h2>Fitness Preferences</h2>
+            <form>
+                <div class="form-group">
+                    <label for="fitness-level">Fitness Level</label>
+                    <select id="fitness-level">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate" selected>Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="primary-goal">Primary Fitness Goal</label>
+                    <select id="primary-goal">
+                        <option value="weight-loss">Weight Loss</option>
+                        <option value="muscle-gain" selected>Muscle Gain</option>
+                        <option value="endurance">Endurance</option>
+                        <option value="general">General Fitness</option>
+                        <option value="flexibility">Flexibility</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="workout-days">Preferred Workout Days per Week</label>
+                    <input type="number" id="workout-days" value="5" min="1" max="7">
+                </div>
+                <div class="form-group">
+                    <label for="workout-time">Preferred Workout Time</label>
+                    <select id="workout-time">
+                        <option value="morning" selected>Morning (6am - 10am)</option>
+                        <option value="midday">Midday (10am - 2pm)</option>
+                        <option value="afternoon">Afternoon (2pm - 6pm)</option>
+                        <option value="evening">Evening (6pm - 10pm)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Save Preferences</button>
+            </form>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="card">
+            <h2>Notification Settings</h2>
+            <form>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" checked style="width: auto; margin-right: 0.75rem;">
+                        <div>
+                            <strong style="color: #667eea;">Workout Reminders</strong>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 0.25rem;">Get notified when it's time to work out</p>
+                        </div>
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" checked style="width: auto; margin-right: 0.75rem;">
+                        <div>
+                            <strong style="color: #667eea;">Goal Progress Updates</strong>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 0.25rem;">Weekly updates on your goal progress</p>
+                        </div>
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" checked style="width: auto; margin-right: 0.75rem;">
+                        <div>
+                            <strong style="color: #667eea;">Streak Notifications</strong>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 0.25rem;">Don't break your streak reminders</p>
+                        </div>
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" style="width: auto; margin-right: 0.75rem;">
+                        <div>
+                            <strong style="color: #667eea;">Achievement Celebrations</strong>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 0.25rem;">Get notified when you hit milestones</p>
+                        </div>
+                    </label>
+                </div>
+                <button type="submit" class="btn">Save Settings</button>
+            </form>
+        </div>
+
+        <!-- Account Statistics -->
+        <div class="card">
+            <h2>Account Statistics</h2>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Lifetime Stats</h3>
+                <div class="grid grid-2">
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Total Workouts</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">42</p>
+                    </div>
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Total Hours</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">31.5</p>
+                    </div>
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Goals Created</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">8</p>
+                    </div>
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Goals Completed</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">3</p>
+                    </div>
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Longest Streak</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">14 days 🔥</p>
+                    </div>
+                    <div>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Current Streak</p>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: #764ba2;">7 days 🔥</p>
+                    </div>
+                </div>
+            </div>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Activity Breakdown</h3>
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Strength Training</span>
+                        <span style="font-weight: 600;">24 workouts (57%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 57%;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Cardio</span>
+                        <span style="font-weight: 600;">12 workouts (29%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 29%;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>HIIT</span>
+                        <span style="font-weight: 600;">6 workouts (14%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 14%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="card">
+            <h2>Account Actions</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-secondary">Export Data</button>
+                <button class="btn btn-secondary">Reset Password</button>
+                <button class="btn btn-secondary" style="border-color: #dc3545; color: #dc3545;">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

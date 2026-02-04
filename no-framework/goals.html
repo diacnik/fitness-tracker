@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Goals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="workouts.html">Workouts</a></li>
+            <li><a href="goals.html" class="active">Goals</a></li>
+            <li><a href="progress.html">Progress</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>My Goals 🎯</h1>
+        <p>Set and track your fitness objectives</p>
+    </div>
+
+    <div class="container">
+        <!-- Create New Goal -->
+        <div class="card" id="new">
+            <h2>Set a New Goal</h2>
+            <form>
+                <div class="form-group">
+                    <label for="goal-name">Goal Name</label>
+                    <input type="text" id="goal-name" placeholder="e.g., Workout 5 times per week">
+                </div>
+                <div class="form-group">
+                    <label for="goal-type">Goal Category</label>
+                    <select id="goal-type">
+                        <option value="">Select category...</option>
+                        <option value="frequency">Workout Frequency</option>
+                        <option value="duration">Total Duration</option>
+                        <option value="distance">Distance</option>
+                        <option value="weight">Weight Lifting</option>
+                        <option value="streak">Streak</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="target-value">Target Value</label>
+                        <input type="number" id="target-value" placeholder="e.g., 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="time-frame">Time Frame</label>
+                        <select id="time-frame">
+                            <option value="week">Per Week</option>
+                            <option value="month">Per Month</option>
+                            <option value="year">Per Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="goal-description">Description (Optional)</label>
+                    <textarea id="goal-description" placeholder="Add any notes about this goal..."></textarea>
+                </div>
+                <button type="submit" class="btn">Create Goal</button>
+            </form>
+        </div>
+
+        <!-- Active Goals -->
+        <div class="card">
+            <h2>Active Goals</h2>
+            
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Workout 5 times this week</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem;">Frequency Goal • This Week</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%;">4/5 workouts</div>
+                </div>
+                <p style="margin-top: 0.5rem; color: #667eea; font-weight: 600;">1 more workout to reach your goal! 💪</p>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Run 20km this month</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem;">Distance Goal • January 2026</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;">13.0/20.0 km</div>
+                </div>
+                <p style="margin-top: 0.5rem; color: #666;">7.0 km remaining</p>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Maintain 30-day streak</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem;">Streak Goal • Ongoing</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 23%;">7/30 days</div>
+                </div>
+                <p style="margin-top: 0.5rem; color: #666;">Keep it up! 🔥</p>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Increase bench press to 80kg</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem;">Weight Goal • By March 2026</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%;">60/80 kg</div>
+                </div>
+                <p style="margin-top: 0.5rem; color: #666;">20 kg to go</p>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Complete 20 hours of training this month</h3>
+                    <span class="goal-status status-active">In Progress</span>
+                </div>
+                <p style="color: #666; margin-bottom: 1rem;">Duration Goal • January 2026</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 57%;">11.5/20.0 hours</div>
+                </div>
+                <p style="margin-top: 0.5rem; color: #666;">8.5 hours remaining</p>
+            </div>
+        </div>
+
+        <!-- Completed Goals -->
+        <div class="card">
+            <h2>Completed Goals 🏆</h2>
+            
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Run first 5K</h3>
+                    <span class="goal-status status-completed">Completed</span>
+                </div>
+                <p style="color: #666; margin-bottom: 0.5rem;">Distance Goal • Completed Dec 15, 2025</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">5.0/5.0 km</div>
+                </div>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Workout 3 times per week for a month</h3>
+                    <span class="goal-status status-completed">Completed</span>
+                </div>
+                <p style="color: #666; margin-bottom: 0.5rem;">Frequency Goal • Completed Dec 31, 2025</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">12/12 workouts</div>
+                </div>
+            </div>
+
+            <div class="goal-item">
+                <div class="goal-header">
+                    <h3>Achieve 14-day workout streak</h3>
+                    <span class="goal-status status-completed">Completed</span>
+                </div>
+                <p style="color: #666; margin-bottom: 0.5rem;">Streak Goal • Completed Jan 14, 2026</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">14/14 days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goal Tips -->
+        <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white;">Tips for Setting Effective Goals 💡</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0;">✓</span>
+                    <strong>Be Specific:</strong> Set clear, measurable targets
+                </li>
+                <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0;">✓</span>
+                    <strong>Start Small:</strong> Build consistency with achievable goals
+                </li>
+                <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0;">✓</span>
+                    <strong>Track Progress:</strong> Regular check-ins keep you motivated
+                </li>
+                <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0;">✓</span>
+                    <strong>Stay Flexible:</strong> Adjust goals as needed to match your progress
+                </li>
+                <li style="padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0;">✓</span>
+                    <strong>Celebrate Wins:</strong> Acknowledge every milestone achieved
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

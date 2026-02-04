@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Workouts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="workouts.html" class="active">Workouts</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="progress.html">Progress</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-header">
+        <h1>My Workouts 🏋️</h1>
+        <p>Build and manage your custom workout routines</p>
+    </div>
+
+    <div class="container">
+        <!-- Create New Workout -->
+        <div class="card" id="create">
+            <h2>Create New Workout Routine</h2>
+            <form>
+                <div class="form-group">
+                    <label for="workout-name">Workout Name</label>
+                    <input type="text" id="workout-name" placeholder="e.g., Morning Strength Training">
+                </div>
+                <div class="form-group">
+                    <label for="workout-type">Workout Type</label>
+                    <select id="workout-type">
+                        <option value="">Select type...</option>
+                        <option value="strength">Strength Training</option>
+                        <option value="cardio">Cardio</option>
+                        <option value="flexibility">Flexibility</option>
+                        <option value="hiit">HIIT</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Estimated Duration (minutes)</label>
+                    <input type="number" id="duration" placeholder="45">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Describe your workout routine..."></textarea>
+                </div>
+                <button type="submit" class="btn">Create Workout</button>
+            </form>
+        </div>
+
+        <!-- Add Exercises Section -->
+        <div class="card">
+            <h2>Add Exercises</h2>
+            <form>
+                <div class="form-group">
+                    <label for="exercise-name">Exercise Name</label>
+                    <input type="text" id="exercise-name" placeholder="e.g., Bench Press">
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="sets">Sets</label>
+                        <input type="number" id="sets" placeholder="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="reps">Reps</label>
+                        <input type="number" id="reps" placeholder="12">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" placeholder="60">
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <input type="text" id="notes" placeholder="Rest 90 seconds between sets">
+                </div>
+                <button type="submit" class="btn btn-secondary">Add Exercise</button>
+            </form>
+        </div>
+
+        <!-- Saved Workout Routines -->
+        <div class="card">
+            <h2>My Workout Routines</h2>
+            
+            <div class="workout-item" style="margin-bottom: 2rem;">
+                <div>
+                    <h4>Full Body Blast</h4>
+                    <p>Strength Training • 60 minutes • 12 exercises</p>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-small">Start</a>
+                    <a href="#" class="btn btn-small btn-secondary">Edit</a>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Upper Body Strength</h3>
+                <p style="color: #666; margin-bottom: 1rem;">Strength Training • 45 minutes • 8 exercises</p>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Bench Press</h4>
+                            <p>3 sets × 12 reps @ 60kg</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Dumbbell Rows</h4>
+                            <p>3 sets × 10 reps @ 25kg each</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Shoulder Press</h4>
+                            <p>3 sets × 12 reps @ 20kg each</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Pull-ups</h4>
+                            <p>3 sets × 8 reps @ bodyweight</p>
+                        </div>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="#" class="btn btn-small">Start Workout</a>
+                    <a href="#" class="btn btn-small btn-secondary">Edit</a>
+                    <a href="#" class="btn btn-small btn-secondary">Duplicate</a>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Cardio Blast</h3>
+                <p style="color: #666; margin-bottom: 1rem;">Cardio • 30 minutes • 5 exercises</p>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Running</h4>
+                            <p>10 minutes @ moderate pace</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Burpees</h4>
+                            <p>3 sets × 15 reps</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Jump Rope</h4>
+                            <p>5 minutes continuous</p>
+                        </div>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="#" class="btn btn-small">Start Workout</a>
+                    <a href="#" class="btn btn-small btn-secondary">Edit</a>
+                </div>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Leg Day</h3>
+                <p style="color: #666; margin-bottom: 1rem;">Strength Training • 50 minutes • 10 exercises</p>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Squats</h4>
+                            <p>4 sets × 10 reps @ 80kg</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Romanian Deadlifts</h4>
+                            <p>3 sets × 12 reps @ 70kg</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Leg Press</h4>
+                            <p>3 sets × 15 reps @ 120kg</p>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <div>
+                            <h4>Calf Raises</h4>
+                            <p>4 sets × 20 reps @ 40kg</p>
+                        </div>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="#" class="btn btn-small">Start Workout</a>
+                    <a href="#" class="btn btn-small btn-secondary">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
