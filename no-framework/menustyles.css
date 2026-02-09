@@ -1,0 +1,90 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: rgb(226, 249, 231);
+}
+
+/* Top bar */
+.menu-bar {
+  display: flex;
+  background: rgb(78, 154, 75);
+  min-height: 30px;
+  padding: 0 10px;
+  align-items: center;
+}
+
+
+/* Menu container */
+.menu {
+  position: relative;
+}
+
+/* Buttons */
+.menu button {
+  background: none;
+  border: none;
+  color: black;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.menu:hover button,
+.menu:focus-within button {
+  background: rgb(2, 178, 46);
+  outline: none;
+}
+
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+
+  background: rgb(2, 178, 46);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.dropdown a {
+  color: purple;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.dropdown a:hover,
+.dropdown a:focus {
+  background: #13e733;
+}
+
+/* Show on hover OR focus */
+.menu:hover .dropdown,
+.menu:focus-within .dropdown {
+  display: flex;
+}
+
+/* Content sections */
+.content {
+  padding: 20px;
+}
+.instructions, .extra-credit {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: white;
+  border-left-style:solid;
+  border-left-width:5px;
+  border-left-color: rgb(95, 193, 83);
+}
+ .extra-credit {
+  border-left-color: rgb(245, 245, 110);
+ }
