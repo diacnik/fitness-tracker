@@ -124,58 +124,183 @@
                     </footer>
                 </div>
             </div>
+
+            <!-- This is the middle column of the page -->
             <div class="column is-one-half">
-                <div class="tabs is-boxed">
-                    <ul>
-                        <li class="is-active">
-                            <a>
-                                <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
-                                <span>Pictures</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <span class="icon is-small"><i class="fas fa-music" aria-hidden="true"></i></span>
-                                <span>Music</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <span class="icon is-small"><i class="fas fa-film" aria-hidden="true"></i></span>
-                                <span>Videos</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <span class="icon is-small"><i class="far fa-file-alt" aria-hidden="true"></i></span>
-                                <span>Documents</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <nav class="panel">
+                    <p class="tabs is-blocked">
+                        <a class="is-active">Current</a>
+                        <a>Completed</a>
+                        <a>Upcoming</a>
+                        <a>All</a>
+                    </p>
+                    <div class="panel-block">
+                        <p class="control has-icons-left">
+                            <input class="input" type="text" placeholder="New Task" />
+                            <span class="icon is-left">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <label class="panel-block">
+                        <input type="checkbox" checked="" />
+                        Make bulma great again
+                    </label>
+                    <label class="panel-block">
+                        <input type="checkbox" />
+                        Add some more features
+                    </label>
+                    <label class="panel-block">
+                        <input type="checkbox" />
+                        Make a github account
+                    </label>
+                    <label class="panel-block">
+                        <input type="checkbox" />
+                        Learn how to use github
+                    </label>
+                    <label class="panel-block">
+                        <input type="checkbox" />
+                        add a .gitignore file
+                    </label>
+                </nav>
+
+                <!-- Message in middle column -->
+                <article class="message is-primary">
+                    <div class="message-header">
+                        <p>Primary</p>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec
+                        nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus
+                        diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac
+                        <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et
+                        sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a
+                        neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+                    </div>
+                </article>
+
+                <!-- Form at bottome of middle column -->
                 <div class="field">
-                    <div class="field-body">
-                        <div class="field">
-                            <div class="control">
-                                <input class="input" type="text" placeholder="Normal sized input">
-                            </div>
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Text input">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </div>
+                    <p class="help is-success">This username is available</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                    </div>
+                    <p class="help is-danger">This email is invalid</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Subject</label>
+                    <div class="control">
+                        <div class="select">
+                            <select>
+                                <option>Select dropdown</option>
+                                <option>With options</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+
                 <div class="field">
-                    <div class="field-body">
-                        <div class="field">
-                            <div class="control">
-                                <label class="checkbox">
-                                    <input type="checkbox">
-                                    Checkbox
-                                </label>
-                            </div>
-                        </div>
+                    <label class="label">Message</label>
+                    <div class="control">
+                        <textarea class="textarea" placeholder="Textarea"></textarea>
                     </div>
                 </div>
+
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            I agree to the <a href="#">terms and conditions</a>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="question">
+                            Yes
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="question">
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End of middle column -->
+
+            <!-- This is the right column of the page -->
             <div class="column is-one-quarter">
-                <p class="subtitle is-3">This app allows you to add, delete, and mark tasks as completed.</p>
+                <h1>Table of Contents</h1>
+                <h4>Intra page navigation</h4>
+                <aside class="menu">
+                    <p class="menu-label">General</p>
+                    <ul class="menu-list">
+                        <li><a>Dashboard</a></li>
+                        <li><a>Customers</a></li>
+                    </ul>
+                    <p class="menu-label">Administration</p>
+                    <ul class="menu-list">
+                        <li><a>Team Settings</a></li>
+                        <li>
+                            <a class="is-active">Manage Your Team</a>
+                            <ul>
+                                <li><a>Members</a></li>
+                                <li><a>Plugins</a></li>
+                                <li><a>Add a member</a></li>
+                            </ul>
+                        </li>
+                        <li><a>Invitations</a></li>
+                        <li><a>Cloud Storage Environment Settings</a></li>
+                        <li><a>Authentication</a></li>
+                    </ul>
+                    <p class="menu-label">Transactions</p>
+                    <ul class="menu-list">
+                        <li><a>Payments</a></li>
+                        <li><a>Transfers</a></li>
+                        <li><a>Balance</a></li>
+                    </ul>
+                </aside>
             </div>
         </div>
     </div>
