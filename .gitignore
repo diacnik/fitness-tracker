@@ -1,2 +1,16 @@
 # Ignore macOS specific files
 .DS_Store
+# Ignore node_modules directory
+node_modules/
+# Ignore log files*.log
+# Ignore build outputdist/
+build/
+# Ignore environment variable files.env
+# Ignore IDE specific files.vscode/
+.idea/
+# Ignore coverage reportscoverage/
+coverage/
+# Ignore temporary files*.tmp
+*.tmp
+# Ignore compiled files*.class
+*.class
