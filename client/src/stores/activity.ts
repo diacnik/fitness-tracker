@@ -8,6 +8,17 @@ export const useActivityStore = defineStore('activity', () => {
   const activities = ref<Activity[]>(activitiesData as Activity[])
   const users = ref<User[]>(usersData)
 
+  function addActivity(newActivity: Omit<Activity, 'id'>) {
+    const nextId = activities.value.length
+      ? Math.max(...activities.value.map(activity => activity.id)) + 1
+      : 1
+
+    activities.value.unshift({
+      id: nextId,
+      ...newActivity,
+    })
+  }
+
   const activitiesWithUsers = computed(() =>
     activities.value.map(activity => ({
       activity,
@@ -15,5 +26,5 @@ export const useActivityStore = defineStore('activity', () => {
     }))
   )
 
-  return { activities, users, activitiesWithUsers }
+  return { activities, users, activitiesWithUsers, addActivity }
 })

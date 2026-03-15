@@ -7,7 +7,7 @@ const activityStore = useActivityStore()
 
 <template>
   <section>
-    <div class="container">
+    <div class="container activity-feed">
       <div>
         <ActivityBox
           v-for="{ activity, user } in activityStore.activitiesWithUsers"
@@ -22,5 +22,9 @@ const activityStore = useActivityStore()
 </template>
 
 <style scoped>
+.activity-feed {
+  max-width: 720px;
+  margin: 0 auto;
+}
 
 </style>

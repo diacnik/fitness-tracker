@@ -26,12 +26,17 @@ const props = defineProps<{
       </div>
     </article>
 
-    <figure class="image is-3by1 mb-3">
-      <img :src="props.activity.image" :alt="props.activity.description" style="object-fit: cover;" />
-    </figure>
-
-    <div class="content mt-2">
-      <p>{{ props.activity.description }}</p>
+    <div class="columns is-mobile is-vcentered mb-3">
+      <div class="column is-two-thirds">
+        <div class="content mt-2">
+          <p>{{ props.activity.description }}</p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <figure class="image is-3by1">
+          <img :src="props.activity.image" :alt="props.activity.description" style="object-fit: cover;" />
+        </figure>
+      </div>
     </div>
 
     <nav class="level is-mobile mt-3">
@@ -49,7 +54,6 @@ const props = defineProps<{
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading">Category</p>
           <p class="title">{{ props.activity.category.charAt(0).toUpperCase() + props.activity.category.slice(1) }}</p>
         </div>
       </div>
