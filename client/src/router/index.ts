@@ -8,6 +8,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/my-activity',
+      name: 'my-activity',
+      component: () => import('@/views/ActivityView.vue') // Lazy load the ActivityView component
     }
   ],
 })
