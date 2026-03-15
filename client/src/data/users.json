@@ -1,0 +1,42 @@
+[
+	{
+		"userId": 1,
+		"profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+		"username": "trailrunner01",
+		"firstName": "Ethan",
+		"lastName": "Brooks",
+		"isAdmin": true
+	},
+	{
+		"userId": 2,
+		"profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80",
+		"username": "summitstride",
+		"firstName": "Maya",
+		"lastName": "Patel",
+		"isAdmin": false
+	},
+	{
+		"userId": 3,
+		"profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+		"username": "peakpedal",
+		"firstName": "Lucas",
+		"lastName": "Reed",
+		"isAdmin": false
+	},
+	{
+		"userId": 4,
+		"profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
+		"username": "cliffclimber",
+		"firstName": "Nora",
+		"lastName": "Kim",
+		"isAdmin": false
+	},
+	{
+		"userId": 5,
+		"profilePicture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80",
+		"username": "steadystrong",
+		"firstName": "Jordan",
+		"lastName": "Diaz",
+		"isAdmin": false
+	}
+]
