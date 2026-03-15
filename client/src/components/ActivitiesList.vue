@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import ActivityBox from './ActivityBox.vue';
+import { useActivityStore } from '../stores/activity'
+import ActivityBox from './ActivityBox.vue'
 
-
+const activityStore = useActivityStore()
 </script>
 
 <template>
@@ -9,17 +10,15 @@ import ActivityBox from './ActivityBox.vue';
     <div class="container">
       <div>
         <ActivityBox
-        v-for="activity in activities"
-        :key="activity.id"
-        :activity="activity"
-        class="mb-4"
+          v-for="{ activity, user } in activityStore.activitiesWithUsers"
+          :key="activity.id"
+          :activity="activity"
+          :user="user"
+          class="mb-4"
         />
       </div>
     </div>
   </section>
-  <div>
-
-  </div>
 </template>
 
 <style scoped>

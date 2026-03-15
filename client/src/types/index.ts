@@ -10,6 +10,7 @@ export interface User {
 export type ActivityCategory = 'run' | 'climb' | 'bike' | 'other' | 'hike';
 
 export interface Activity {
+	id: number;
 	userId: number;
 	date: string;
 	time: string;
