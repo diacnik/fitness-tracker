@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { useUserStore } from '../stores/user'
+import UsersList from '@/components/UsersList.vue'
 </script>
 
 <template>
   <h1 class="title is-2">Admin Dashboard</h1>
   <div>
-    <ul>
-      <li v-for="user in useUserStore().users" :key="user.userId">
-        {{ user.firstName }} {{ user.lastName }} (@{{ user.username }})
-      </li>
-    </ul>
+    <UsersList />
   </div>
 </template>
 
