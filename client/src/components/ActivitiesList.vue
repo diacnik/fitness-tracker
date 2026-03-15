@@ -6,12 +6,26 @@ import ActivityBox from './ActivityBox.vue'
 
 const activityStore = useActivityStore()
 const userStore = useUserStore()
+const props = withDefaults(
+  defineProps<{
+    filterMode?: 'current' | 'others'
+  }>(),
+  {
+    filterMode: 'current',
+  },
+)
 
-const currentUserActivities = computed(() => {
+const filteredActivities = computed(() => {
   const currentUserId = userStore.currentUserId
 
   if (currentUserId === null) {
     return []
+  }
+
+  if (props.filterMode === 'others') {
+    return activityStore.activitiesWithUsers.filter(
+      ({ activity }) => activity.userId !== currentUserId,
+    )
   }
 
   return activityStore.activitiesWithUsers.filter(
@@ -25,7 +39,7 @@ const currentUserActivities = computed(() => {
     <div class="container activity-feed">
       <div>
         <ActivityBox
-          v-for="{ activity, user } in currentUserActivities"
+          v-for="{ activity, user } in filteredActivities"
           :key="activity.id"
           :activity="activity"
           :user="user"

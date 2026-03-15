@@ -54,7 +54,7 @@ function submitActivity() {
         <h1 class="title is-2 mb-0">Recent Activities</h1>
         <button class="button is-primary" @click="showCreateForm = true">Add Activity</button>
       </div>
-      <ActivitiesList />
+      <ActivitiesList filter-mode="current" />
 
       <div class="modal" :class="{ 'is-active': showCreateForm }">
         <div class="modal-background" @click="closeForm"></div>
