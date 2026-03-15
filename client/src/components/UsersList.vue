@@ -1,8 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import { useActivityStore } from '../stores/activity'
 import { useUserStore } from '../stores/user'
+import type { User } from '../types'
 
+const activityStore = useActivityStore()
 const userStore = useUserStore()
+const editingUserId = ref<number | null>(null)
+const editForm = reactive({
+  firstName: '',
+  lastName: '',
+  username: '',
+  profilePicture: '',
+  isAdmin: false,
+})
 
 const sortedUsers = computed(() => {
   return [...userStore.users].sort((a, b) => {
@@ -13,6 +24,57 @@ const sortedUsers = computed(() => {
     return `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
   })
 })
+
+const startEditing = (user: User) => {
+  editingUserId.value = user.userId
+  editForm.firstName = user.firstName
+  editForm.lastName = user.lastName
+  editForm.username = user.username
+  editForm.profilePicture = user.profilePicture
+  editForm.isAdmin = user.isAdmin
+}
+
+const cancelEditing = () => {
+  editingUserId.value = null
+}
+
+const deleteUser = (user: User) => {
+  const confirmed = window.confirm(
+    `Delete ${user.firstName} ${user.lastName} and all of their activities?`,
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  if (editingUserId.value === user.userId) {
+    cancelEditing()
+  }
+
+  activityStore.deleteActivitiesByUser(user.userId)
+  userStore.deleteUser(user.userId)
+}
+
+const saveUser = (userId: number) => {
+  const firstName = editForm.firstName.trim()
+  const lastName = editForm.lastName.trim()
+  const username = editForm.username.trim()
+  const profilePicture = editForm.profilePicture.trim()
+
+  if (!firstName || !lastName || !username || !profilePicture) {
+    return
+  }
+
+  userStore.updateUser(userId, {
+    firstName,
+    lastName,
+    username,
+    profilePicture,
+    isAdmin: editForm.isAdmin,
+  })
+
+  cancelEditing()
+}
 </script>
 
 <template>
@@ -20,14 +82,79 @@ const sortedUsers = computed(() => {
     <h2 class="title is-4">Users</h2>
 
     <ul class="users-grid">
-      <li v-for="user in sortedUsers" :key="user.userId" class="user-card">
+      <li
+        v-for="user in sortedUsers"
+        :key="user.userId"
+        :class="['user-card', { 'user-card-editing': editingUserId === user.userId }]"
+      >
         <img
-          :src="user.profilePicture"
+          :src="editingUserId === user.userId ? editForm.profilePicture : user.profilePicture"
           :alt="`${user.firstName} ${user.lastName}`"
           class="user-avatar"
         />
 
-        <div class="user-meta">
+        <template v-if="editingUserId === user.userId">
+          <div class="user-editor">
+            <div class="field-row">
+              <div class="field">
+                <label class="label" :for="`first-name-${user.userId}`">First name</label>
+                <div class="control">
+                  <input
+                    :id="`first-name-${user.userId}`"
+                    v-model="editForm.firstName"
+                    class="input is-small"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label" :for="`last-name-${user.userId}`">Last name</label>
+                <div class="control">
+                  <input
+                    :id="`last-name-${user.userId}`"
+                    v-model="editForm.lastName"
+                    class="input is-small"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="label" :for="`username-${user.userId}`">Username</label>
+                <div class="control">
+                  <input
+                    :id="`username-${user.userId}`"
+                    v-model="editForm.username"
+                    class="input is-small"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label" :for="`avatar-${user.userId}`">Profile picture</label>
+                <div class="control">
+                  <input
+                    :id="`avatar-${user.userId}`"
+                    v-model="editForm.profilePicture"
+                    class="input is-small"
+                    type="url"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <label class="checkbox is-size-7">
+              <input v-model="editForm.isAdmin" type="checkbox" />
+              Admin user
+            </label>
+          </div>
+        </template>
+
+        <div v-else class="user-meta">
           <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
           <p class="user-username">@{{ user.username }}</p>
         </div>
@@ -35,8 +162,18 @@ const sortedUsers = computed(() => {
         <span v-if="user.isAdmin" class="tag is-warning is-light">Admin</span>
 
         <div class="user-actions">
-          <button type="button" class="button is-small">Edit</button>
-          <button type="button" class="button is-small is-danger is-light">Delete</button>
+          <template v-if="editingUserId === user.userId">
+            <button type="button" class="button is-small is-success" @click="saveUser(user.userId)">
+              Save
+            </button>
+            <button type="button" class="button is-small is-light" @click="cancelEditing">
+              Cancel
+            </button>
+          </template>
+          <button v-else type="button" class="button is-small" @click="startEditing(user)">Edit</button>
+          <button type="button" class="button is-small is-danger is-light" @click="deleteUser(user)">
+            Delete
+          </button>
         </div>
       </li>
     </ul>
@@ -67,6 +204,10 @@ const sortedUsers = computed(() => {
   background: #fff;
 }
 
+.user-card-editing {
+  align-items: flex-start;
+}
+
 .user-avatar {
   width: 52px;
   height: 52px;
@@ -77,6 +218,26 @@ const sortedUsers = computed(() => {
 
 .user-meta {
   flex: 1;
+}
+
+.user-editor {
+  flex: 1;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.field-row + .field-row,
+.field-row + .checkbox {
+  margin-top: 0.75rem;
+}
+
+.label {
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
 }
 
 .user-name {
@@ -93,6 +254,21 @@ const sortedUsers = computed(() => {
 .user-actions {
   display: flex;
   gap: 0.5rem;
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .user-card {
+    flex-wrap: wrap;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .user-actions {
+    width: 100%;
+  }
 }
 
 </style>
