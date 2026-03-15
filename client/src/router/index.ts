@@ -15,9 +15,9 @@ const router = createRouter({
       component: () => import('@/views/ActivityView.vue') // Lazy load the ActivityView component
     },
     {
-      path: '/friends-activity',
-      name: 'friends-activity',
-      component: () => import('@/views/FriendView.vue') // Lazy load the FriendView component
+      path: '/connections',
+      name: 'connections',
+      component: () => import('@/views/FriendView.vue') // Lazy load the ConnectionView component
     },
     {
       path: '/users',

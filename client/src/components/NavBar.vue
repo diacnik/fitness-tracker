@@ -34,24 +34,21 @@ const logout = () => {
 
   <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active': isActive}">
     <div class="navbar-start">
-      <RouterLink to="/" active-class="is-active" class="navbar-item">
-        Home
-      </RouterLink>
 
-      <RouterLink to="/my-activity" class="navbar-item">
-        My Activity
-      </RouterLink>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <RouterLink to="/my-activity" class="navbar-link">
+          My Activity
+        </RouterLink>
 
-      <RouterLink to="/stats" class="navbar-item">
-        Stats
-      </RouterLink>
+        <div class="navbar-dropdown">
+          <RouterLink to="/stats" class="navbar-item">
+            Stats
+          </RouterLink>
+        </div>
+      </div>
 
-      <RouterLink to="/friends-activity" class="navbar-item">
-        Friends Activity
-      </RouterLink>
-
-      <RouterLink to="/people-search" class="navbar-item">
-        People Search
+      <RouterLink to="/connections" class="navbar-item">
+        Connections
       </RouterLink>
 
       <div v-if="currentUser?.isAdmin" class="navbar-item has-dropdown is-hoverable">
@@ -97,6 +94,49 @@ const logout = () => {
 </template>
 
 <style scoped>
+.navbar-menu {
+  flex-grow: 1;
+}
+
+@media screen and (min-width: 1024px) {
+  .navbar-menu {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .navbar-start {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+  }
+
+  .navbar-end {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  .navbar-start > .navbar-item,
+  .navbar-start > .navbar-item.has-dropdown {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-start .navbar-link,
+  .navbar-start > .navbar-item {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .buttons {
+    justify-content: flex-end;
+  }
+}
+
 .current-user-pill {
   display: inline-flex;
   align-items: center;
