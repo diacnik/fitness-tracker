@@ -4,6 +4,8 @@ import activitiesData from '../data/activities.json'
 import { useUserStore } from './user'
 import type { Activity } from '../types'
 
+type ActivityUpdates = Partial<Omit<Activity, 'id'>>
+
 export const useActivityStore = defineStore('activity', () => {
   const userStore = useUserStore()
   const activities = ref<Activity[]>(activitiesData as Activity[])
@@ -24,6 +26,34 @@ export const useActivityStore = defineStore('activity', () => {
     activities.value = activities.value.filter(activity => activity.userId !== userId)
   }
 
+  function updateActivity(activityId: number, updates: ActivityUpdates) {
+    const activityIndex = activities.value.findIndex(activity => activity.id === activityId)
+
+    if (activityIndex === -1) {
+      return false
+    }
+
+    const currentActivity = activities.value[activityIndex]
+
+    if (!currentActivity) {
+      return false
+    }
+
+    activities.value[activityIndex] = {
+      ...currentActivity,
+      ...updates,
+    }
+
+    return true
+  }
+
+  function deleteActivity(activityId: number) {
+    const originalLength = activities.value.length
+    activities.value = activities.value.filter(activity => activity.id !== activityId)
+
+    return activities.value.length !== originalLength
+  }
+
   const activitiesWithUsers = computed(() =>
     activities.value
       .map(activity => {
@@ -41,5 +71,13 @@ export const useActivityStore = defineStore('activity', () => {
       .filter(item => item !== null)
   )
 
-  return { activities, users, activitiesWithUsers, addActivity, deleteActivitiesByUser }
+  return {
+    activities,
+    users,
+    activitiesWithUsers,
+    addActivity,
+    deleteActivitiesByUser,
+    updateActivity,
+    deleteActivity,
+  }
 })
