@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '../stores/user'
-import type { User } from '../types'
 
 const userStore = useUserStore()
+const { users, currentUser } = storeToRefs(userStore)
 
-const users = computed(() => userStore.users)
-const currentUser = computed(() => userStore.currentUser)
 const isOpen = ref(false)
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
 }
 
-const handleLogin = (user: User) => {
-  userStore.setCurrentUser(user.userId)
+const handleLogin = (userId: number) => {
+  userStore.setCurrentUser(Number(userId))
   isOpen.value = false
 }
 </script>
@@ -39,7 +38,8 @@ const handleLogin = (user: User) => {
           class="menu-item"
           :class="{ active: currentUser?.userId === user.userId }"
           role="menuitem"
-          @click="handleLogin(user)"
+          @mousedown.prevent
+          @click.stop="handleLogin(user.userId)"
         >
           <img :src="user.profilePicture" :alt="`${user.username} profile picture`" class="avatar" />
           <span>{{ user.firstName }} {{ user.lastName }}</span>
@@ -91,7 +91,7 @@ const handleLogin = (user: User) => {
   border-radius: 0.75rem;
   background: #ffffff;
   box-shadow: 0 12px 30px rgba(17, 24, 39, 0.16);
-  z-index: 20;
+  z-index: 100;
 }
 
 .menu-item {
