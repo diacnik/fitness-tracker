@@ -9,9 +9,11 @@ const userStore = useUserStore()
 const props = withDefaults(
   defineProps<{
     filterMode?: 'current' | 'others'
+    limit?: number
   }>(),
   {
     filterMode: 'current',
+    limit: undefined,
   },
 )
 
@@ -22,30 +24,48 @@ const filteredActivities = computed(() => {
     return []
   }
 
-  if (props.filterMode === 'others') {
-    return activityStore.activitiesWithUsers.filter(
+  const activities = props.filterMode === 'others'
+    ? activityStore.activitiesWithUsers.filter(
       ({ activity }) => activity.userId !== currentUserId,
     )
+    : activityStore.activitiesWithUsers.filter(
+      ({ activity }) => activity.userId === currentUserId,
+    )
+
+  const sortedActivities = [...activities].sort((a, b) => {
+    const aDate = new Date(`${a.activity.date}T${a.activity.time || '00:00'}`).getTime()
+    const bDate = new Date(`${b.activity.date}T${b.activity.time || '00:00'}`).getTime()
+
+    return bDate - aDate
+  })
+
+  if (props.limit === undefined || props.limit <= 0) {
+    return sortedActivities
   }
 
-  return activityStore.activitiesWithUsers.filter(
-    ({ activity }) => activity.userId === currentUserId,
-  )
+  return sortedActivities.slice(0, props.limit)
 })
+
+const hasActivities = computed(() => filteredActivities.value.length > 0)
+const emptyStateLabel = computed(() =>
+  props.filterMode === 'others' ? 'No activities from others yet.' : 'No activities yet.',
+  )
 </script>
 
 <template>
   <section>
     <div class="container activity-feed">
-      <div>
+      <div v-if="hasActivities">
         <ActivityBox
           v-for="{ activity, user } in filteredActivities"
           :key="activity.id"
           :activity="activity"
           :user="user"
+          :show-actions="props.filterMode !== 'others'"
           class="mb-4"
         />
       </div>
+      <p v-else class="has-text-grey">{{ emptyStateLabel }}</p>
     </div>
   </section>
 </template>

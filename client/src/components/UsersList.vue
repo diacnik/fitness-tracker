@@ -199,9 +199,9 @@ const saveUser = (userId: number) => {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  border: 1px solid #dbdbdb;
+  border: 1px solid var(--bulma-border, #dbdbdb);
   border-radius: 0.75rem;
-  background: #fff;
+  background: var(--bulma-scheme-main, #fff);
 }
 
 .user-card-editing {
@@ -247,7 +247,7 @@ const saveUser = (userId: number) => {
 
 .user-username {
   margin: 0.1rem 0 0;
-  color: #6b7280;
+  color: var(--bulma-text-weak, #6b7280);
   font-size: 0.95rem;
 }
 

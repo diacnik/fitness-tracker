@@ -50,9 +50,11 @@ function submitActivity() {
 <template>
   <section>
     <div class="container">
-      <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
-        <h1 class="title is-2 mb-0">Recent Activities</h1>
-        <button class="button is-primary" @click="showCreateForm = true">Add Activity</button>
+      <div class="activity-header">
+        <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+          <h1 class="title is-2 mb-0">Recent Activities</h1>
+          <button class="button is-link" @click="showCreateForm = true">Add Activity</button>
+        </div>
       </div>
       <ActivitiesList filter-mode="current" />
 
@@ -146,7 +148,7 @@ function submitActivity() {
             </section>
 
             <footer class="modal-card-foot">
-              <button class="button is-primary" type="submit">Save Activity</button>
+              <button class="button is-link" type="submit">Save Activity</button>
               <button class="button" type="button" @click="closeForm">Cancel</button>
             </footer>
           </form>
@@ -155,6 +157,13 @@ function submitActivity() {
     </div>
   </section>
 </template>
+
+<style scoped>
+.activity-header {
+  max-width: 720px;
+  margin: 0 auto;
+}
+</style>
 
 <style scoped>
 

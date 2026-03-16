@@ -15,13 +15,18 @@ const router = createRouter({
       component: () => import('@/views/ActivityView.vue') // Lazy load the ActivityView component
     },
     {
+      path: '/stats',
+      name: 'stats',
+      component: () => import('@/views/StatsView.vue') // Lazy load the StatsView component
+    },
+    {
       path: '/connections',
       name: 'connections',
       component: () => import('@/views/FriendView.vue') // Lazy load the ConnectionView component
     },
     {
-      path: '/users',
-      name: 'users',
+      path: '/admin',
+      name: 'admin',
       component: () => import('@/views/AdminView.vue') // Lazy load the AdminView component
     }
   ],

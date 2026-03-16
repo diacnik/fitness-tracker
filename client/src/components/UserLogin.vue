@@ -60,10 +60,10 @@ const handleLogin = (userId: number) => {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--bulma-border, #d1d5db);
   border-radius: 0.5rem;
-  background: #ffffff;
-  color: #111827;
+  background: var(--bulma-scheme-main, #ffffff);
+  color: var(--bulma-text-strong, #111827);
   padding: 0.55rem 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -87,10 +87,10 @@ const handleLogin = (userId: number) => {
   overflow-y: auto;
   list-style: none;
   padding: 0.4rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--bulma-border, #e5e7eb);
   border-radius: 0.75rem;
-  background: #ffffff;
-  box-shadow: 0 12px 30px rgba(17, 24, 39, 0.16);
+  background: var(--bulma-scheme-main, #ffffff);
+  box-shadow: 0 12px 30px var(--bulma-shadow, rgba(17, 24, 39, 0.16));
   z-index: 100;
 }
 
@@ -108,17 +108,22 @@ const handleLogin = (userId: number) => {
   text-align: left;
 }
 
+.menu-item span {
+  color: var(--bulma-text-strong, #111827);
+  font-weight: 600;
+}
+
 .menu-item:hover {
-  background: #f3f4f6;
+  background: var(--bulma-scheme-main-bis, #f3f4f6);
 }
 
 .menu-item.active {
-  background: #e5e7eb;
+  background: var(--bulma-scheme-main-ter, #e5e7eb);
 }
 
 .menu-item small {
   display: block;
-  color: #6b7280;
+  color: var(--bulma-text-weak, #6b7280);
   font-size: 0.78rem;
 }
 

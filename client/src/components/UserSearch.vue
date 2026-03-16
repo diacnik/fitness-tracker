@@ -88,7 +88,7 @@ const clearQuery = () => {
 
 .search-meta {
   margin: 0.75rem 0 0;
-  color: #4b5563;
+  color: var(--bulma-text, #4b5563);
   font-size: 0.92rem;
 }
 
@@ -104,10 +104,10 @@ const clearQuery = () => {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--bulma-border, #e5e7eb);
   border-radius: 0.7rem;
   padding: 0.55rem 0.7rem;
-  background: #fff;
+  background: var(--bulma-scheme-main, #fff);
 }
 
 .avatar {
@@ -129,13 +129,13 @@ const clearQuery = () => {
 
 .username {
   margin: 0.1rem 0 0;
-  color: #6b7280;
+  color: var(--bulma-text-weak, #6b7280);
   font-size: 0.9rem;
 }
 
 .empty-state {
   margin: 0.9rem 0 0;
-  color: #6b7280;
+  color: var(--bulma-text-weak, #6b7280);
 }
 
 @media (max-width: 640px) {

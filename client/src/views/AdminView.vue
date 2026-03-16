@@ -3,12 +3,15 @@ import UsersList from '@/components/UsersList.vue'
 </script>
 
 <template>
-  <h1 class="title is-2">Admin Dashboard</h1>
-  <div>
-    <UsersList />
+  <div class="admin-header">
+    <h1 class="title is-2">Admin Dashboard</h1>
   </div>
+  <UsersList />
 </template>
 
 <style scoped>
-
+.admin-header {
+  max-width: 720px;
+  margin: 0 auto 1.5rem;
+}
 </style>

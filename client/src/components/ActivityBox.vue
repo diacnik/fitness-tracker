@@ -6,6 +6,7 @@ import type { Activity, ActivityCategory, User } from '../types'
 const props = defineProps<{
   activity: Activity
   user: User
+  showActions?: boolean
 }>()
 
 const activityStore = useActivityStore()
@@ -159,7 +160,7 @@ const deleteActivity = () => {
       </div>
 
       <div class="activity-actions">
-        <button type="button" class="button is-success is-small" @click="saveActivity">Save</button>
+        <button type="button" class="button is-link is-small" @click="saveActivity">Save</button>
         <button type="button" class="button is-light is-small" @click="cancelEditing">Cancel</button>
       </div>
     </template>
@@ -180,7 +181,7 @@ const deleteActivity = () => {
             </p>
           </div>
         </div>
-        <div class="media-right">
+        <div v-if="props.showActions !== false" class="media-right">
           <button type="button" class="button is-small" @click="startEditing">Edit</button>
           <button type="button" class="button is-small is-danger is-light" @click="deleteActivity">Delete</button>
         </div>

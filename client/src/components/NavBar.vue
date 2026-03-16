@@ -16,7 +16,7 @@ const logout = () => {
 </script>
 
 <template>
-  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
     <RouterLink to="/" class="navbar-item has-text-weight-semibold">
@@ -51,16 +51,10 @@ const logout = () => {
         Connections
       </RouterLink>
 
-      <div v-if="currentUser?.isAdmin" class="navbar-item has-dropdown is-hoverable">
-        <a to="/admin" class="navbar-link">
+      <div v-if="currentUser?.isAdmin" class="navbar-item is-hoverable">
+        <RouterLink to="/admin" class="navbar-item">
           Admin
-        </a>
-
-        <div class="navbar-dropdown">
-          <RouterLink to="/users" class="navbar-item">
-            Users
-          </RouterLink>
-        </div>
+        </RouterLink>
       </div>
     </div>
 
@@ -76,7 +70,7 @@ const logout = () => {
             <span class="current-user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
           </div>
 
-          <a v-if="!currentUser" class="button is-primary">
+          <a v-if="!currentUser" class="button is-link">
             <strong>Sign up</strong>
           </a>
 
@@ -94,6 +88,10 @@ const logout = () => {
 </template>
 
 <style scoped>
+.navbar {
+  border-bottom: 3px solid var(--bulma-orange, #ff8a00);
+}
+
 .navbar-menu {
   flex-grow: 1;
 }
@@ -145,7 +143,7 @@ const logout = () => {
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 999px;
   padding: 0.35rem 0.7rem;
-  color: #ffffff;
+  color: var(--bulma-white, #ffffff);
 }
 
 .current-user-avatar {
