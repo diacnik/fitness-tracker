@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
 	userId: number;
 	profilePicture: string;
 	username: string;
@@ -9,7 +9,7 @@ export interface User {
 
 export type ActivityCategory = 'run' | 'climb' | 'bike' | 'other' | 'hike';
 
-export interface Activity {
+export type Activity = {
 	id: number;
 	userId: number;
 	date: string;
