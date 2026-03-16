@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Client: Chrome",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/client/src",
+      "sourceMapPathOverrides": {
+        "/@fs/*": "${workspaceFolder}/client/src/*"
+      }
+    },
+    {
+      "type": "firefox",
+      "request": "launch",
+      "name": "Client: Firefox",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/client/src",
+      "pathMappings": [
+        {
+          "url": "http://localhost:5173",
+          "path": "${workspaceFolder}/client/src"
+        }
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Server: Node",
+      "program": "${workspaceFolder}/server/index.ts",
+      "runtimeExecutable": "tsx",
+      "runtimeArgs": ["watch"],
+      "skipFiles": ["<node_internals>/**"],
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Chrome",
+      "configurations": ["Client: Chrome", "Server: Node"]
+    },
+    {
+      "name": "Full Stack: Firefox",
+      "configurations": ["Client: Firefox", "Server: Node"]
+    }
+  ]
+}
