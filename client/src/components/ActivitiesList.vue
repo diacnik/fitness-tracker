@@ -6,6 +6,7 @@ import ActivityBox from './ActivityBox.vue'
 
 const activityStore = useActivityStore()
 const userStore = useUserStore()
+// Props for filtering user/other and limiting activities shown
 const props = withDefaults(
   defineProps<{
     filterMode?: 'current' | 'others'
@@ -24,6 +25,7 @@ const filteredActivities = computed(() => {
     return []
   }
 
+  // Filter out user activities if others or only user activities if current
   const activities = props.filterMode === 'others'
     ? activityStore.activitiesWithUsers.filter(
       ({ activity }) => activity.userId !== currentUserId,

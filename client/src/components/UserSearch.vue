@@ -11,7 +11,7 @@ const query = ref('')
 const normalizedQuery = computed(() => query.value.trim().toLowerCase())
 
 const filteredUsers = computed(() => {
-  if (!normalizedQuery.value) {
+  if (!normalizedQuery.value) { // Return empty array if no users found or query is empty
     return []
   }
 
