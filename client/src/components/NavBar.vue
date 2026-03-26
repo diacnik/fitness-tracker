@@ -96,6 +96,16 @@ const logout = () => {
   flex-grow: 1;
 }
 
+.navbar-item.has-dropdown .navbar-dropdown {
+  display: none;
+}
+
+.navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown,
+.navbar-item.has-dropdown:has(.navbar-link.router-link-active) .navbar-dropdown,
+.navbar-item.has-dropdown:has(.navbar-dropdown .router-link-active) .navbar-dropdown {
+  display: block;
+}
+
 @media screen and (min-width: 1024px) {
   .navbar-menu {
     display: flex;
