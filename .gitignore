@@ -7,6 +7,7 @@ node_modules/
 # Ignore build outputdist/
 build/
 # Ignore environment variable files.env
+.env
 # Ignore IDE specific files.vscode/
 .idea/
 # Ignore coverage reportscoverage/
