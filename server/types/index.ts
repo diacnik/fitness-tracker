@@ -1,7 +1,7 @@
 export type { DataEnvelope, DataListEnvelope } from './dataenvelopes';
 
 export type User = {
-	userId: number;
+	id: number;
 	profilePicture: string;
 	username: string;
 	firstName: string;
@@ -10,7 +10,7 @@ export type User = {
 }
 
 export const userKeys: (keyof User)[] = [
-    'userId',
+    'id',
     'profilePicture',
     'username',
     'firstName',
