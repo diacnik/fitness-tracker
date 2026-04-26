@@ -1,5 +1,5 @@
 import type { User } from "../types";
-import { PagingRequest } from "../types/dataenvelopes";
+import { PagingRequest } from "../types/dataEnvelopes";
 import { connect } from "./supabase";
 
 export const TABLE_NAME = "users";

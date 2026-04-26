@@ -1,4 +1,4 @@
-export type { DataEnvelope, DataListEnvelope } from './dataenvelopes';
+export type { DataEnvelope, DataListEnvelope } from "./dataEnvelopes";
 
 export type User = {
 	id: number;
