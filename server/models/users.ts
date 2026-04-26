@@ -1,18 +1,22 @@
-import type { User } from "../types";
+import { userKeys, type User } from "../types";
+import data1 from "../data/users.json"
 import { PagingRequest } from "../types/dataEnvelopes";
-import { connect } from "./supabase";
+import { connect, filterKeys, toCamelCase, toSnakeCase } from "./supabase";
 
 export const TABLE_NAME = "users";
 
 type ItemType = User;
+const data = {
+    items: data1, // data1 is already the array of users from the JSON file
+}
 
 export async function getAll(params: PagingRequest) {
     const db = connect();
-
     let query = db.from(TABLE_NAME).select("*", { count: "estimated"});
 
     if (params?.search) {
-        query = query.or(`username.ilike.%${params.search}%`).or(`firstName.ilike.%${params.search}%`).or(`lastName.ilike.%${params.search}%`);
+        const search = params.search.toLowerCase();
+        query = query.or(`username.ilike.%${search}%`).or(`firstName.ilike.%${search}%`).or(`lastName.ilike.%${search}%`);
     }
     if (params?.sortBy) {
         query = query.order(params.sortBy, { ascending: !params.descending });
@@ -40,41 +44,36 @@ export async function get(id: number): Promise<ItemType> {
     const result = await db.from(TABLE_NAME).select("*").eq("id", id).single();
 
     if (result.error) {
-        throw result.error;
-    }
-
-    const item = result.data as ItemType | null;
-    if (!item) {
         const error = { status: 404, message: "User not found" };
         throw error;
     }
 
-    return item as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
-export async function create(item: Exclude<ItemType, 'id'>) {
+export async function create(user: ItemType): Promise<ItemType> {
     const db = connect();
-    const result = await db.from(TABLE_NAME).insert(item).select("*").single();
+    const result = await db.from(TABLE_NAME).insert(toSnakeCase(user)).select().single();
 
     if (result.error) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
-export async function update(id: number, user: Partial<ItemType>) {
+export async function update(id: number, user: Partial<ItemType>): Promise<ItemType> {
     const db = connect();
-    const result = await db.from(TABLE_NAME).update(user).eq("id", id).select("*").single();
+    const result = await db.from(TABLE_NAME).update(toSnakeCase(user)).eq("id", id).select().single();
 
     if (result.error) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
-export async function remove(id: number) {
+export async function remove(id: number): Promise<ItemType> {
     const db = connect();
     const result = await db.from(TABLE_NAME).delete().eq("id", id).select().single();
     
@@ -82,5 +81,18 @@ export async function remove(id: number) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
+}
+
+export async function seed() {
+    const db = connect();
+    const items = data.items.map((item) => ({
+        ...toSnakeCase(filterKeys(item, userKeys)),
+    }));
+    const result = await db.from(TABLE_NAME).insert(items);
+    if (result.error) {
+        throw result.error;
+    }
+
+    return result.count;
 }
