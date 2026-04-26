@@ -1,10 +1,14 @@
-import type { Activity } from "../types";
+import { activityKeys, type Activity } from "../types";
+import data1 from "../data/activities.json"
 import { PagingRequest } from "../types/dataEnvelopes";
-import { connect } from "./supabase";
+import { connect, filterKeys, toCamelCase, toSnakeCase } from "./supabase";
 
 export const TABLE_NAME = "activities";
 
 type ItemType = Activity;
+const data = {
+    items: data1, // data1 is already the array of activities from the JSON file
+}
 
 export async function getAll(params: PagingRequest) {
     const db = connect();
@@ -60,7 +64,7 @@ export async function create(item: Exclude<ItemType, 'id'>) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
 export async function update(id: number, user: Partial<ItemType>) {
@@ -71,7 +75,7 @@ export async function update(id: number, user: Partial<ItemType>) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
 export async function remove(id: number) {
@@ -82,5 +86,17 @@ export async function remove(id: number) {
         throw result.error;
     }
 
-    return result.data as ItemType;
+    return toCamelCase(result.data) as ItemType;
+}
+
+export async function seed() {
+    const db = connect();
+    const items = data.items.map((item) =>
+        toSnakeCase(filterKeys(item, activityKeys)),
+    );
+    const result = await db.from(TABLE_NAME).insert(items);
+    if (result.error) {
+        throw result.error;
+    }
+    return result.count;
 }
