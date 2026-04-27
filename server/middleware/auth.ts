@@ -37,7 +37,7 @@ export function requireAuth(role?: string, userId?: number) {
             });
         }
 
-        if (role && req.user.role !== role) {
+        if (role && req.user.isAdmin !== true) {
             return res.status(403).send({
                 data: null,
                 isSuccess: false,
@@ -55,5 +55,4 @@ export function requireAuth(role?: string, userId?: number) {
 
         next();
             }
-        }
-    };
+        };

@@ -11,6 +11,18 @@ export type FeedbackMessage = {
 
 export const useSessionStore = defineStore('session', () => {
   const user = ref<User | null>(null)
+  const token = ref<string | null>(null)
+
+  async function login(email: string, password: string) {
+    const response = await myApi<{ token: string; user: User }>('users/login', { email, password }, { method: 'POST' })
+    user.value = response.user
+    token.value = response.token
+  }
+
+  function logout() {
+    user.value = null
+    token.value = null
+  }
 
   const messages = ref<FeedbackMessage[]>([])
   function addMessage(text: string, type: FeedbackMessage['type'] = 'info') {
@@ -45,6 +57,9 @@ export const useSessionStore = defineStore('session', () => {
     handleError,
     isLoading,
     api,
+    token,
+    logout,
+    login
   }
 })
 
