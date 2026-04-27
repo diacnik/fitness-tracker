@@ -66,14 +66,14 @@ export async function login(email: string, _passowrd: string): Promise<{ token: 
 
     // Check password would go here
 
-    return new Promise((_resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
         sign(user, process.env.JWT_SECRET || "secret", { expiresIn: "1h" }, (err, token) => {
             if (err || !token) {
                 reject(err || new Error("Failed to generate token"));
                 return;
             }
-            return { token, user };
+            resolve({ token, user });
         });
     });
 }
