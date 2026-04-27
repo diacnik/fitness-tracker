@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
-import { User } from "../types";
+import { User, UserRole } from "../types";
 
 declare global {
     namespace Express {
@@ -27,7 +27,7 @@ export function validateJWT(req: Request, _res: Response, next: NextFunction) {
     });
 }
 
-export function requireAuth(isAdmin?: boolean, userId?: number) {
+export function requireAuth(role?: UserRole, userId?: number) {
     return (req: Request, res: Response, next: NextFunction) => {
         if (!req.user) {
             return res.status(401).send({
@@ -37,7 +37,7 @@ export function requireAuth(isAdmin?: boolean, userId?: number) {
             });
         }
 
-        if (isAdmin && req.user.isAdmin !== true) {
+        if (role && req.user.role !== role) {
             return res.status(403).send({
                 data: null,
                 isSuccess: false,

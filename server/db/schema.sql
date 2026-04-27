@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    role VARCHAR(50) DEFAULT 'user' CHECK (role IN ('admin', 'user')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

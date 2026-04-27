@@ -5,7 +5,8 @@
 		"username": "trailrunner01",
 		"firstName": "Ethan",
 		"lastName": "Brooks",
-		"isAdmin": true
+		"email": "trailrunner01@example.com",
+		"role": "admin"
 	},
 	{
 		"id": 2,
@@ -13,7 +14,8 @@
 		"username": "summitstride",
 		"firstName": "Maya",
 		"lastName": "Patel",
-		"isAdmin": false
+		"email": "summitstride@example.com",
+		"role": "user"
 	},
 	{
 		"id": 3,
@@ -21,7 +23,8 @@
 		"username": "peakpedal",
 		"firstName": "Lucas",
 		"lastName": "Reed",
-		"isAdmin": false
+		"email": "peakpedal@example.com",
+		"role": "user"
 	},
 	{
 		"id": 4,
@@ -29,7 +32,8 @@
 		"username": "cliffclimber",
 		"firstName": "Nora",
 		"lastName": "Kim",
-		"isAdmin": false
+		"email": "cliffclimber@example.com",
+		"role": "user"
 	},
 	{
 		"id": 5,
@@ -37,6 +41,7 @@
 		"username": "steadystrong",
 		"firstName": "Jordan",
 		"lastName": "Diaz",
-		"isAdmin": false
+		"email": "steadystrong@example.com",
+		"role": "user"
 	}
 ]

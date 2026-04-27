@@ -5,7 +5,7 @@ import { requireAuth } from "../middleware/auth";
 
 const app = Router();
 
-app.get("/", requireAuth(true), async (req, res) => {
+app.get("/", requireAuth("admin"), async (req, res) => {
     const { list, count } = await getAll(req.query);
     const response: DataListEnvelope<User> = {
         data: list,
@@ -15,7 +15,7 @@ app.get("/", requireAuth(true), async (req, res) => {
     res.send(response);
 })
 
-.get("/count", requireAuth(true), async (req, res) => {
+.get("/count", requireAuth("admin"), async (req, res) => {
     const { count } = await getAll(req.query);
     const response: DataEnvelope<{ count: number }> = {
         data: { count },
@@ -24,7 +24,7 @@ app.get("/", requireAuth(true), async (req, res) => {
     res.send(response);
 })
 
-.get("/:id", requireAuth(), async (req, res) => {
+.get("/:id", requireAuth("admin"), async (req, res) => {
     const { id } = req.params;
     const response: DataEnvelope<User> = {
         data: await get(Number(id)),
@@ -61,7 +61,7 @@ app.get("/", requireAuth(true), async (req, res) => {
     res.send(response);
 })
 
-.delete("/:id", requireAuth(true), async (req, res) => {
+.delete("/:id", requireAuth("admin"), async (req, res) => {
     const { id } = req.params;
     const removedUser = await remove(Number(id));
     const response: DataEnvelope<User> = {
@@ -72,7 +72,7 @@ app.get("/", requireAuth(true), async (req, res) => {
     res.send(response);
 })
 
-.post("/seed", requireAuth(true), async (_req, res) => {
+.post("/seed", requireAuth("admin"), async (_req, res) => {
     const count = await seed();
     const response: DataEnvelope<number | null> = {
         data: count,

@@ -1,12 +1,15 @@
 export type { DataEnvelope, DataListEnvelope } from "./dataEnvelopes";
 
+export type UserRole = 'admin' | 'user';
+
 export type User = {
 	id: number;
 	profilePicture: string;
 	username: string;
 	firstName: string;
 	lastName: string;
-	isAdmin: boolean;
+    email: string;
+	role: UserRole;
 }
 
 export const userKeys: (keyof User)[] = [
@@ -15,7 +18,8 @@ export const userKeys: (keyof User)[] = [
     'username',
     'firstName',
     'lastName',
-    'isAdmin'
+    'email',
+    'role'
 ]
 
 export type ActivityCategory = 'run' | 'climb' | 'bike' | 'other' | 'hike';
