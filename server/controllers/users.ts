@@ -1,24 +1,21 @@
 import { Router } from "express";
 import { getAll, get, create, update, remove, seed, login } from "../models/users";
 import { User, DataEnvelope, DataListEnvelope } from "../types";
+import { requireAuth } from "../middleware/auth";
 
 const app = Router();
 
-app.get("/", async (req, res) => {
+app.get("/", requireAuth("admin"), async (req, res) => {
     const { list, count } = await getAll(req.query);
-    const sanitizedUsers = list.map((x) => ({
-        ...x,
-        password: undefined, // remove password from response
-    }));
     const response: DataListEnvelope<User> = {
-        data: sanitizedUsers,
+        data: list,
         isSuccess: true,
         total: count,
     }
     res.send(response);
 })
 
-.get("/count", async (req, res) => {
+.get("/count", requireAuth("admin"), async (req, res) => {
     const { count } = await getAll(req.query);
     const response: DataEnvelope<{ count: number }> = {
         data: { count },
@@ -27,7 +24,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.get("/:id", async (req, res) => {
+.get("/:id", requireAuth(), async (req, res) => {
     const { id } = req.params;
     const response: DataEnvelope<User> = {
         data: await get(Number(id)),
@@ -64,7 +61,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.delete("/:id", async (req, res) => {
+.delete("/:id", requireAuth("admin"), async (req, res) => {
     const { id } = req.params;
     const removedUser = await remove(Number(id));
     const response: DataEnvelope<User> = {
@@ -75,7 +72,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.post("/seed", async (_req, res) => {
+.post("/seed", requireAuth("admin"), async (_req, res) => {
     const count = await seed();
     const response: DataEnvelope<number | null> = {
         data: count,

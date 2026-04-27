@@ -5,7 +5,7 @@ import express from "express";
 import usersController from "./controllers/users";
 import activitiesController from "./controllers/activities";
 import { DataEnvelope } from "./types";
-import { validateJWT } from "./middleware/auth";
+import { requireAuth, validateJWT } from "./middleware/auth";
 
 const PORT = process.env.PORT ?? 3000;
 const SERVER = process.env.SERVER ?? `localhost`;
@@ -14,19 +14,24 @@ const STATIC_DIR = process.env.STATIC_DIR ?? "client/dist";
 const app = express();
 
 // Middleware
-app.use((_req, res, next) => {
+app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  
+  if (req.method === "OPTIONS") {
+    return;
+  }
   next();
-}).use(express.json())
+})
+.use(express.json())
 .use(validateJWT);
 
 
 // Routes
 app.use(express.static(STATIC_DIR))
   .use("/api/v1/users", usersController)
-  .use("/api/v1/activities", activitiesController);
+  .use("/api/v1/activities", requireAuth(),activitiesController);
 
 // Error handling
 app.use(

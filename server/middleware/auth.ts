@@ -26,3 +26,34 @@ export function validateJWT(req: Request, _res: Response, next: NextFunction) {
         next();
     });
 }
+
+export function requireAuth(role?: string, userId?: number) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.user) {
+            return res.status(401).send({
+                data: null,
+                isSuccess: false,
+                message: "Authentication required",
+            });
+        }
+
+        if (role && req.user.role !== role) {
+            return res.status(403).send({
+                data: null,
+                isSuccess: false,
+                message: "Forbidden: insufficient permissions",
+            });
+        }
+
+        if (userId && req.user.id !== userId) {
+            return res.status(403).send({
+                data: null,
+                isSuccess: false,
+                message: "Forbidden: insufficient permissions",
+            });
+        }
+
+        next();
+            }
+        }
+    };
