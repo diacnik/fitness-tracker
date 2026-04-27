@@ -53,6 +53,6 @@ export function requireAuth(role?: string, userId?: number) {
             });
         }
 
-        next();
+        return next();
             }
         };
