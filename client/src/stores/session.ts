@@ -40,6 +40,12 @@ export const useSessionStore = defineStore('session', () => {
   function api<T>(endpoint: string, data?: unknown, options: RequestInit = {}) {
     loadingCount.value++
 
+    options.headers = {
+      'Content-Type': 'application/json',
+      ...(token.value ? { Authorization: `Bearer ${token.value}` } : {}),
+      ...options.headers,
+    }
+
     return myApi<T>(endpoint, data, options)
       .catch((error) => {
         handleError(error)
