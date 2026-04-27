@@ -67,7 +67,7 @@ const clearQuery = () => {
           <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
           <p class="username">@{{ user.username }}</p>
         </div>
-        <span v-if="user.isAdmin" class="tag is-warning is-light">Admin</span>
+        <span v-if="String(user.role).toLowerCase() === 'admin'" class="tag is-warning is-light">Admin</span>
       </li>
     </ul>
 
