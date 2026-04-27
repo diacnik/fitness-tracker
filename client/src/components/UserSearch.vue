@@ -1,26 +1,32 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '../stores/user'
+import { computed, ref, watch } from 'vue'
+import { useSessionStore } from '../stores/session'
+import type { User, DataListEnvelope } from '../../../server/types'
 
-const userStore = useUserStore()
-const { users } = storeToRefs(userStore)
+const sessionStore = useSessionStore()
 
 const query = ref('')
+const filteredUsers = ref<User[]>([])
 
 const normalizedQuery = computed(() => query.value.trim().toLowerCase())
 
-const filteredUsers = computed(() => {
-  if (!normalizedQuery.value) { // Return empty array if no users found or query is empty
-    return []
+let debounceTimer: ReturnType<typeof setTimeout>
+watch(normalizedQuery, (newQuery) => {
+  clearTimeout(debounceTimer)
+
+  if (!newQuery) {
+    filteredUsers.value = []
+    return
   }
 
-  return users.value.filter((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`.toLowerCase()
-    const username = user.username.toLowerCase()
-
-    return fullName.includes(normalizedQuery.value) || username.includes(normalizedQuery.value)
-  })
+  debounceTimer = setTimeout(async () => {
+    try {
+      const response = await sessionStore.api<DataListEnvelope<User>>(`users?search=${encodeURIComponent(newQuery)}`)
+      filteredUsers.value = response.data
+    } catch (e) {
+      console.error('Failed to search users:', e)
+    }
+  }, 300)
 })
 
 const hasQuery = computed(() => normalizedQuery.value.length > 0)
@@ -28,7 +34,6 @@ const hasQuery = computed(() => normalizedQuery.value.length > 0)
 const clearQuery = () => {
   query.value = ''
 }
-
 </script>
 
 <template>
@@ -56,7 +61,7 @@ const clearQuery = () => {
     <p class="search-meta">{{ filteredUsers.length }} user{{ filteredUsers.length === 1 ? '' : 's' }} found</p>
 
     <ul v-if="filteredUsers.length" class="results-list">
-      <li v-for="user in filteredUsers" :key="user.userId" class="result-item">
+      <li v-for="user in filteredUsers" :key="user.id" class="result-item">
         <img :src="user.profilePicture" :alt="`${user.username} profile picture`" class="avatar" />
         <div class="result-text">
           <p class="name">{{ user.firstName }} {{ user.lastName }}</p>

@@ -2,15 +2,15 @@
 
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { useUserStore } from '../stores/user';
+import { useSessionStore } from '../stores/session';
 import UserLogin from './UserLogin.vue';
 
 const isActive = ref(false);
-const userStore = useUserStore();
-const currentUser = computed(() => userStore.currentUser);
+const sessionStore = useSessionStore();
+const currentUser = computed(() => sessionStore.user);
 
 const logout = () => {
-  userStore.clearCurrentUser();
+  sessionStore.user = null;
 };
 
 </script>

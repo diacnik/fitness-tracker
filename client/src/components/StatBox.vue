@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useActivityStore } from '../stores/activity'
-import { useUserStore } from '../stores/user'
+import { useSessionStore } from '../stores/session'
 
 type PeriodTotals = {
   week: number
@@ -10,7 +10,7 @@ type PeriodTotals = {
 }
 
 const activityStore = useActivityStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 
 function getDateBoundaries(now: Date) {
   const weekStart = new Date(now)
@@ -30,9 +30,9 @@ function getDateBoundaries(now: Date) {
 }
 
 function getCurrentUserActivities() {
-  const currentUserId = userStore.currentUserId
+  const currentUserId = sessionStore.user?.id
 
-  if (currentUserId === null) {
+  if (!currentUserId) {
     return []
   }
 

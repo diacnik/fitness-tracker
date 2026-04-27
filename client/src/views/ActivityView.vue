@@ -2,15 +2,16 @@
 import { reactive, ref } from 'vue'
 import ActivitiesList from '../components/ActivitiesList.vue'
 import { useActivityStore } from '../stores/activity'
-import type { ActivityCategory } from '../types'
+import { useSessionStore } from '../stores/session'
+import type { ActivityCategory } from '../../../server/types'
 
 const activityStore = useActivityStore()
+const sessionStore = useSessionStore()
 const showCreateForm = ref(false)
 
 const categoryOptions: ActivityCategory[] = ['run', 'climb', 'bike', 'other', 'hike']
 
 const form = reactive({
-  userId: activityStore.users[0]?.userId ?? 1,
   date: '',
   time: '',
   description: '',
@@ -25,8 +26,12 @@ function closeForm() {
 }
 
 function submitActivity() {
-  activityStore.addActivity({
-    userId: Number(form.userId),
+  if (!sessionStore.user) {
+    return
+  }
+
+  activityStore.createActivity({
+    userId: sessionStore.user.id,
     date: form.date,
     time: form.time,
     description: form.description.trim(),
@@ -68,16 +73,15 @@ function submitActivity() {
 
           <form @submit.prevent="submitActivity">
             <section class="modal-card-body">
-              <div class="field">
+              <div v-if="sessionStore.user" class="field">
                 <label class="label">User</label>
                 <div class="control">
-                  <div class="select is-fullwidth">
-                    <select v-model.number="form.userId" required>
-                      <option v-for="user in activityStore.users" :key="user.userId" :value="user.userId">
-                        {{ user.firstName }} {{ user.lastName }} (@{{ user.username }})
-                      </option>
-                    </select>
-                  </div>
+                  <input
+                    class="input"
+                    type="text"
+                    :value="`${sessionStore.user.firstName} ${sessionStore.user.lastName} (@${sessionStore.user.username})`"
+                    disabled
+                  />
                 </div>
               </div>
 
