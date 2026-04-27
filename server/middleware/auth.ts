@@ -27,7 +27,7 @@ export function validateJWT(req: Request, _res: Response, next: NextFunction) {
     });
 }
 
-export function requireAuth(role?: string, userId?: number) {
+export function requireAuth(isAdmin?: boolean, userId?: number) {
     return (req: Request, res: Response, next: NextFunction) => {
         if (!req.user) {
             return res.status(401).send({
@@ -37,7 +37,7 @@ export function requireAuth(role?: string, userId?: number) {
             });
         }
 
-        if (role && req.user.isAdmin !== true) {
+        if (isAdmin && req.user.isAdmin !== true) {
             return res.status(403).send({
                 data: null,
                 isSuccess: false,
