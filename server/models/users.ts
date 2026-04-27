@@ -1,3 +1,5 @@
+import { sign } from "jsonwebtoken";
+
 import { userKeys, type User } from "../types";
 import data1 from "../data/users.json"
 import { PagingRequest } from "../types/dataEnvelopes";
@@ -49,6 +51,31 @@ export async function get(id: number): Promise<ItemType> {
     }
 
     return toCamelCase(result.data) as ItemType;
+}
+
+export async function login(email: string, _passowrd: string): Promise<{ token: string; user: ItemType }> {
+    const db = connect();
+    const result = await db.from(TABLE_NAME).select("*").eq("email", email).single();
+
+    if (result.error) {
+        const error = { status: 401, message: "Invalid email or password" };
+        throw error;
+    }
+
+    const user = toCamelCase(result.data) as ItemType;
+
+    // Check password would go here
+
+    return new Promise((_resolve, reject) => {
+
+        sign(user, process.env.JWT_SECRET || "secret", { expiresIn: "1h" }, (err, token) => {
+            if (err || !token) {
+                reject(err || new Error("Failed to generate token"));
+                return;
+            }
+            return { token, user };
+        });
+    });
 }
 
 export async function create(user: ItemType): Promise<ItemType> {

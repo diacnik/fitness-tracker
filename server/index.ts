@@ -5,6 +5,7 @@ import express from "express";
 import usersController from "./controllers/users";
 import activitiesController from "./controllers/activities";
 import { DataEnvelope } from "./types";
+import { validateJWT } from "./middleware/auth";
 
 const PORT = process.env.PORT ?? 3000;
 const SERVER = process.env.SERVER ?? `localhost`;
@@ -18,7 +19,8 @@ app.use((_req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
-}).use(express.json());
+}).use(express.json())
+.use(validateJWT);
 
 
 // Routes

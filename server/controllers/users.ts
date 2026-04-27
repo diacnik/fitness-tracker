@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAll, get, create, update, remove, seed } from "../models/users";
+import { getAll, get, create, update, remove, seed, login } from "../models/users";
 import { User, DataEnvelope, DataListEnvelope } from "../types";
 
 const app = Router();
@@ -33,6 +33,15 @@ app.get("/", async (req, res) => {
         data: await get(Number(id)),
         isSuccess: true,
     }
+    res.send(response);
+})
+
+.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    const { token, user } = await login(email, password);
+    const response: DataEnvelope<{ token: string; user: User }> = {
+        data: { token, user },
+        isSuccess: true,    }
     res.send(response);
 })
 
