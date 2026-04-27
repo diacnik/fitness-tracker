@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useSessionStore } from '../stores/session'
-import type { User, DataEnvelope, DataListEnvelope } from '../../../server/types'
+import type { User, DataEnvelope, DataListEnvelope, UserRole } from '../../../server/types'
 
 const sessionStore = useSessionStore()
 const users = ref<User[]>([])
@@ -11,7 +11,7 @@ const editForm = reactive({
   lastName: '',
   username: '',
   profilePicture: '',
-  isAdmin: false,
+  role: 'user' as UserRole,
 })
 
 onMounted(async () => {
@@ -25,8 +25,8 @@ onMounted(async () => {
 
 const sortedUsers = computed(() => {
   return [...users.value].sort((a, b) => {
-    if (a.isAdmin !== b.isAdmin) {
-      return a.isAdmin ? -1 : 1
+    if (a.role !== b.role) {
+      return a.role === 'admin' ? -1 : 1
     }
 
     return `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
@@ -39,7 +39,7 @@ const startEditing = (user: User) => {
   editForm.lastName = user.lastName
   editForm.username = user.username
   editForm.profilePicture = user.profilePicture
-  editForm.isAdmin = user.isAdmin
+  editForm.role = user.role
 }
 
 const cancelEditing = () => {
@@ -83,7 +83,7 @@ const saveUser = async (userId: number) => {
       lastName,
       username,
       profilePicture,
-      isAdmin: editForm.isAdmin,
+      role: editForm.role,
     }, { method: 'PATCH' })
 
     const index = users.value.findIndex(u => u.id === userId)
@@ -168,7 +168,7 @@ const saveUser = async (userId: number) => {
             </div>
 
             <label class="checkbox is-size-7">
-              <input v-model="editForm.isAdmin" type="checkbox" />
+              <input v-model="editForm.role" type="checkbox" true-value="admin" false-value="user" />
               Admin user
             </label>
           </div>
@@ -179,7 +179,7 @@ const saveUser = async (userId: number) => {
           <p class="user-username">@{{ user.username }}</p>
         </div>
 
-        <span v-if="user.isAdmin" class="tag is-warning is-light">Admin</span>
+        <span v-if="user.role === 'admin'" class="tag is-warning is-light">Admin</span>
 
         <div class="user-actions">
           <template v-if="editingUserId === user.id">
