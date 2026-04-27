@@ -1,48 +1,39 @@
 <script setup lang="ts">
-// import user login component? account creation component?
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useSessionStore } from '../stores/session'
+
+const email = ref('')
+const session = useSessionStore()
+const router = useRouter()
+
+const handleLogin = async () => {
+  try {
+    await session.login(email.value, "")
+    router.push({ name: 'home' })
+  } catch (error) {
+    console.error('Failed to log in:', error)
+  }
+}
 </script>
 
 <template>
   <div class="landing-container">
     <div class="hero">
       <h1>Welcome to Fitness Tracker</h1>
-      <p>Log in to track your activities, or create an account to get started!</p>
+      <p>Log in to track your activities and reach your goals!</p>
     </div>
 
     <div class="auth-sections">
       <!-- Login Section -->
       <section class="auth-box">
         <h2>Login</h2>
-        <form @submit.prevent>
-          <div class="field">
-            <label>Username</label>
-            <input type="text" placeholder="Enter your username" />
-          </div>
-          <div class="field">
-            <label>Password</label>
-            <input type="password" placeholder="Enter your password" />
-          </div>
-          <button class="button is-primary" type="submit">Log In</button>
-        </form>
-      </section>
-
-      <!-- Account Creation Section -->
-      <section class="auth-box">
-        <h2>Create Account</h2>
-        <form @submit.prevent>
+        <form @submit.prevent="handleLogin">
           <div class="field">
             <label>Email</label>
-            <input type="email" placeholder="Enter your email" />
+            <input type="email" v-model="email" placeholder="Enter your email" required />
           </div>
-          <div class="field">
-            <label>Username</label>
-            <input type="text" placeholder="Choose a username" />
-          </div>
-          <div class="field">
-            <label>Password</label>
-            <input type="password" placeholder="Choose a password" />
-          </div>
-          <button class="button is-link" type="submit">Sign Up</button>
+          <button class="button is-primary" type="submit">Log In</button>
         </form>
       </section>
     </div>
