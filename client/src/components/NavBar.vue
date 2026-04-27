@@ -51,7 +51,7 @@ const logout = () => {
         Connections
       </RouterLink>
 
-      <div v-if="currentUser?.isAdmin" class="navbar-item is-hoverable">
+      <div v-if="currentUser?.role === 'admin'" class="navbar-item is-hoverable">
         <RouterLink to="/admin" class="navbar-item">
           Admin
         </RouterLink>
