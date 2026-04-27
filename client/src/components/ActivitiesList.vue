@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useActivityStore } from '../stores/activity'
-import { useUserStore } from '../stores/user'
+import { useSessionStore } from '../stores/session'
 import ActivityBox from './ActivityBox.vue'
 
 const activityStore = useActivityStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
 // Props for filtering user/other and limiting activities shown
 const props = withDefaults(
   defineProps<{
@@ -19,24 +19,24 @@ const props = withDefaults(
 )
 
 const filteredActivities = computed(() => {
-  const currentUserId = userStore.currentUserId
+  const currentUserId = sessionStore.user?.id
 
-  if (currentUserId === null) {
+  if (!currentUserId) {
     return []
   }
 
   // Filter out user activities if others or only user activities if current
   const activities = props.filterMode === 'others'
-    ? activityStore.activitiesWithUsers.filter(
-      ({ activity }) => activity.userId !== currentUserId,
+    ? activityStore.activities.filter(
+      (activity) => activity.userId !== currentUserId,
     )
-    : activityStore.activitiesWithUsers.filter(
-      ({ activity }) => activity.userId === currentUserId,
+    : activityStore.activities.filter(
+      (activity) => activity.userId === currentUserId,
     )
 
   const sortedActivities = [...activities].sort((a, b) => {
-    const aDate = new Date(`${a.activity.date}T${a.activity.time || '00:00'}`).getTime()
-    const bDate = new Date(`${b.activity.date}T${b.activity.time || '00:00'}`).getTime()
+    const aDate = new Date(`${a.date}T${a.time || '00:00'}`).getTime()
+    const bDate = new Date(`${b.date}T${b.time || '00:00'}`).getTime()
 
     return bDate - aDate
   })
@@ -59,10 +59,10 @@ const emptyStateLabel = computed(() =>
     <div class="container activity-feed">
       <div v-if="hasActivities">
         <ActivityBox
-          v-for="{ activity, user } in filteredActivities"
+          v-for="activity in filteredActivities"
           :key="activity.id"
           :activity="activity"
-          :user="user"
+          :user="sessionStore.user"
           :show-actions="props.filterMode !== 'others'"
           class="mb-4"
         />
