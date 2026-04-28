@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { User } from '../../../server/types'
+import type { User, DataEnvelope } from '../../../server/types'
 import { computed, ref } from 'vue'
 
 import { api as myApi } from '../services/myFetch'
@@ -14,9 +14,9 @@ export const useSessionStore = defineStore('session', () => {
   const token = ref<string | null>(null)
 
   async function login(email: string, password: string) {
-    const response = await myApi<{ token: string; user: User }>('users/login', { email, password }, { method: 'POST' })
-    user.value = response.user
-    token.value = response.token
+    const response = await myApi<DataEnvelope<{ token: string; user: User }>>('users/login', { email, password }, { method: 'POST' })
+    user.value = response.data.user
+    token.value = response.data.token
   }
 
   function logout() {
