@@ -71,17 +71,11 @@ const handleLogin = async () => {
 <style scoped>
 .landing-page {
   min-height: 100vh;
-  margin-top: -3rem; /* Offset for the container padding if necessary, or just rely on heroic spread */
-  background-color: #f4f6f8;
-}
-
-.hero.is-primary {
-  background: linear-gradient(135deg, #00d1b2 0%, #3298dc 100%);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  margin-top: -3rem;
 }
 
 .login-wrapper {
-  margin-top: -5rem; /* Pull the box up into the hero slightly */
+  margin-top: -5rem;
 }
 
 .login-box {

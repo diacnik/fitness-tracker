@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useActivityStore } from '../stores/activity'
 import { useSessionStore } from '../stores/session'
 
@@ -11,6 +11,10 @@ type PeriodTotals = {
 
 const activityStore = useActivityStore()
 const sessionStore = useSessionStore()
+
+onMounted(() => {
+  activityStore.loadActivities()
+})
 
 function getDateBoundaries(now: Date) {
   const weekStart = new Date(now)
@@ -47,14 +51,14 @@ function getTotalDistanceByPeriod(): PeriodTotals {
     (totals, activity) => {
       const activityDate = new Date(`${activity.date}T00:00:00`)
 
-      totals.allTime += activity.distance
+      totals.allTime += Number(activity.distance)
 
       if (activityDate >= monthStart && activityDate <= now) {
-        totals.month += activity.distance
+        totals.month += Number(activity.distance)
       }
 
       if (activityDate >= weekStart && activityDate <= now) {
-        totals.week += activity.distance
+        totals.week += Number(activity.distance)
       }
 
       return totals
@@ -71,14 +75,14 @@ function getTotalDurationByPeriod(): PeriodTotals {
     (totals, activity) => {
       const activityDate = new Date(`${activity.date}T00:00:00`)
 
-      totals.allTime += activity.duration
+      totals.allTime += Number(activity.duration)
 
       if (activityDate >= monthStart && activityDate <= now) {
-        totals.month += activity.duration
+        totals.month += Number(activity.duration)
       }
 
       if (activityDate >= weekStart && activityDate <= now) {
-        totals.week += activity.duration
+        totals.week += Number(activity.duration)
       }
 
       return totals
