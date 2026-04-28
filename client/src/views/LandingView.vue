@@ -18,71 +18,80 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="landing-container">
-    <div class="hero">
-      <h1>Welcome to Fitness Tracker</h1>
-      <p>Log in to track your activities and reach your goals!</p>
-    </div>
+  <div class="landing-page">
+    <section class="hero is-primary is-medium is-bold">
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <h1 class="title is-1 is-size-2-mobile">
+            <span class="icon is-large mr-2"><i class="fas fa-running"></i></span>
+            Fitness Tracker
+          </h1>
+          <p class="subtitle is-3 is-size-5-mobile mt-3">
+            Track your activities, connect with friends, and hit your fitness goals today.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <div class="auth-sections">
-      <!-- Login Section -->
-      <section class="auth-box">
-        <h2>Login</h2>
-        <form @submit.prevent="handleLogin">
-          <div class="field">
-            <label>Email</label>
-            <input type="email" v-model="email" placeholder="Enter your email" required />
+    <div class="container px-4 mt-6 pb-6">
+      <div class="columns is-centered is-vcentered login-wrapper">
+        <div class="column is-6-tablet is-5-desktop is-4-widescreen">
+          <div class="box login-box has-background-white">
+            <h2 class="title is-4 has-text-centered has-text-dark mb-5">Welcome Back</h2>
+            <form @submit.prevent="handleLogin">
+              <div class="field">
+                <label class="label has-text-grey-dark">Email Account</label>
+                <div class="control has-icons-left">
+                  <input
+                    class="input is-medium is-focused"
+                    type="email"
+                    v-model="email"
+                    placeholder="e.g. alex@example.com"
+                    required
+                  />
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field mt-5">
+                <button class="button is-primary is-medium is-fullwidth has-text-weight-bold" :class="{'is-loading': session.isLoading}" type="submit">
+                  Log In
+                </button>
+              </div>
+            </form>
           </div>
-          <button class="button is-primary" type="submit">Log In</button>
-        </form>
-      </section>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.landing-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.landing-page {
+  min-height: 100vh;
+  margin-top: -3rem; /* Offset for the container padding if necessary, or just rely on heroic spread */
+  background-color: #f4f6f8;
 }
 
-.hero {
-  margin-bottom: 3rem;
+.hero.is-primary {
+  background: linear-gradient(135deg, #00d1b2 0%, #3298dc 100%);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.auth-sections {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
+.login-wrapper {
+  margin-top: -5rem; /* Pull the box up into the hero slightly */
 }
 
-.auth-box {
-  flex: 1;
-  min-width: 300px;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.login-box {
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
-.field {
-  margin-bottom: 1rem;
-  text-align: left;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.field input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.login-box:hover {
+  transform: translateY(-2px);
 }
 </style>
