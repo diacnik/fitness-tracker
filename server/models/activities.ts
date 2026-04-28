@@ -33,7 +33,7 @@ export async function getAll(params: PagingRequest) {
         throw result.error;
     }
 
-    const list = result.data as ItemType[];
+    const list = result.data.map(toCamelCase) as ItemType[];
     const count = result.count ?? 0;
 
     return { list, count };

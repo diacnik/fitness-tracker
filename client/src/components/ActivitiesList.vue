@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useActivityStore } from '../stores/activity'
 import { useSessionStore } from '../stores/session'
 import ActivityBox from './ActivityBox.vue'
@@ -17,6 +17,10 @@ const props = withDefaults(
     limit: undefined,
   },
 )
+
+onMounted(() => {
+  activityStore.loadActivities()
+})
 
 const filteredActivities = computed(() => {
   const currentUserId = sessionStore.user?.id
