@@ -18,7 +18,7 @@ export async function getAll(params: PagingRequest) {
 
     if (params?.search) {
         const search = params.search.toLowerCase();
-        query = query.or(`username.ilike.%${search}%`).or(`firstName.ilike.%${search}%`).or(`lastName.ilike.%${search}%`);
+        query = query.or(`username.ilike.%${search}%`).or(`first_name.ilike.%${search}%`).or(`last_name.ilike.%${search}%`);
     }
     if (params?.sortBy) {
         query = query.order(params.sortBy, { ascending: !params.descending });

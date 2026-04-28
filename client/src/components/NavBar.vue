@@ -1,16 +1,18 @@
 <script setup lang="ts">
 
 import { computed, ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { useSessionStore } from '../stores/session';
 import UserLogin from './UserLogin.vue';
 
 const isActive = ref(false);
 const sessionStore = useSessionStore();
+const router = useRouter();
 const currentUser = computed(() => sessionStore.user);
 
 const logout = () => {
-  sessionStore.user = null;
+  sessionStore.logout();
+  router.push('/');
 };
 
 </script>
@@ -19,7 +21,7 @@ const logout = () => {
   <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
-    <RouterLink to="/" class="navbar-item has-text-weight-semibold">
+    <RouterLink to="/home" class="navbar-item has-text-weight-semibold">
       Fitness Tracker
     </RouterLink>
 
