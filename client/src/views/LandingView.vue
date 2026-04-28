@@ -19,7 +19,7 @@ const handleLogin = async () => {
 
 <template>
   <div class="landing-page">
-    <section class="hero is-primary is-medium is-bold">
+    <section class="hero is-dark is-medium is-bold">
       <div class="hero-body">
         <div class="container has-text-centered">
           <h1 class="title is-1 is-size-2-mobile">
@@ -56,7 +56,7 @@ const handleLogin = async () => {
               </div>
 
               <div class="field mt-5">
-                <button class="button is-primary is-medium is-fullwidth has-text-weight-bold" :class="{'is-loading': session.isLoading}" type="submit">
+                <button class="button is-dark is-medium is-fullwidth has-text-weight-bold" :class="{'is-loading': session.isLoading}" type="submit">
                   Log In
                 </button>
               </div>
@@ -72,6 +72,10 @@ const handleLogin = async () => {
 .landing-page {
   min-height: 100vh;
   margin-top: -3rem;
+}
+
+.hero.is-dark {
+  border-bottom: 6px solid #ff8a00;
 }
 
 .login-wrapper {
