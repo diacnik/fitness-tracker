@@ -1,7 +1,7 @@
-import { connectionKeys, type Connection } from "../types";
+import { type Connection } from "../types";
 import data1 from "../data/connections.json";
 import { PagingRequest } from "../types/dataEnvelopes";
-import { connect, filterKeys, toCamelCase, toSnakeCase } from "./supabase";
+import { connect, toCamelCase, toSnakeCase } from "./supabase";
 
 export const TABLE_NAME = "connections";
 
