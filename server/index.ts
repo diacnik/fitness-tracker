@@ -4,6 +4,7 @@ config();
 import express from "express";
 import usersController from "./controllers/users";
 import activitiesController from "./controllers/activities";
+import connectionsController from "./controllers/connections";
 import { DataEnvelope } from "./types";
 import { requireAuth, validateJWT } from "./middleware/auth";
 
@@ -31,7 +32,8 @@ app.use((req, res, next) => {
 // Routes
 app.use(express.static(STATIC_DIR))
   .use("/api/v1/users", usersController)
-  .use("/api/v1/activities", requireAuth(),activitiesController);
+  .use("/api/v1/activities", requireAuth(),activitiesController)
+  .use("/api/v1/connections", connectionsController);
 
 // Error handling
 app.use(

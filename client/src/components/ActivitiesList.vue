@@ -2,14 +2,16 @@
 import { computed, onMounted } from 'vue'
 import { useActivityStore } from '../stores/activity'
 import { useSessionStore } from '../stores/session'
+import { useConnectionStore } from '../stores/connections'
 import ActivityBox from './ActivityBox.vue'
 
 const activityStore = useActivityStore()
 const sessionStore = useSessionStore()
+const connectionStore = useConnectionStore()
 // Props for filtering user/other and limiting activities shown
 const props = withDefaults(
   defineProps<{
-    filterMode?: 'current' | 'others'
+    filterMode?: 'current' | 'others' | 'connections'
     limit?: number
   }>(),
   {
@@ -20,6 +22,10 @@ const props = withDefaults(
 
 onMounted(() => {
   activityStore.loadActivities()
+
+  if (props.filterMode === 'connections' && sessionStore.user) {
+    connectionStore.loadForUser(sessionStore.user.id)
+  }
 })
 
 const filteredActivities = computed(() => {
@@ -30,13 +36,17 @@ const filteredActivities = computed(() => {
   }
 
   // Filter out user activities if others or only user activities if current
-  const activities = props.filterMode === 'others'
-    ? activityStore.activities.filter(
-      (activity) => activity.userId !== currentUserId,
+  let activities = activityStore.activities;
+  if (props.filterMode === 'others') {
+    activities = activities.filter((activity) => activity.userId !== currentUserId)
+  } else if (props.filterMode === 'connections') {
+    const connectionIds = new Set(
+      connectionStore.connections.map(c => c.userId === currentUserId ? c.friendId : c.userId)
     )
-    : activityStore.activities.filter(
-      (activity) => activity.userId === currentUserId,
-    )
+    activities = activities.filter((activity) => connectionIds.has(activity.userId))
+  } else {
+    activities = activities.filter((activity) => activity.userId === currentUserId)
+  }
 
   const sortedActivities = [...activities].sort((a, b) => {
     const aDate = new Date(`${a.date}T${a.time || '00:00'}`).getTime()
@@ -53,9 +63,11 @@ const filteredActivities = computed(() => {
 })
 
 const hasActivities = computed(() => filteredActivities.value.length > 0)
-const emptyStateLabel = computed(() =>
-  props.filterMode === 'others' ? 'No activities from others yet.' : 'No activities yet.',
-  )
+const emptyStateLabel = computed(() => {
+  if (props.filterMode === 'others') return 'No activities from others yet.'
+  if (props.filterMode === 'connections') return 'No activities from connections yet.'
+  return 'No activities yet.'
+})
 </script>
 
 <template>
@@ -67,7 +79,7 @@ const emptyStateLabel = computed(() =>
           :key="activity.id"
           :activity="activity"
           :user="sessionStore.user"
-          :show-actions="props.filterMode !== 'others'"
+          :show-actions="props.filterMode === 'current'"
           class="mb-4"
         />
       </div>
