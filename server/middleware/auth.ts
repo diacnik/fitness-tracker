@@ -17,7 +17,7 @@ export function validateJWT(req: Request, _res: Response, next: NextFunction) {
         return next();
     }
 
-    verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+    verify(token, process.env.JWT_SECRET || "secret", (err, decoded) => {
         if (err) {
             return next(err);
         }
