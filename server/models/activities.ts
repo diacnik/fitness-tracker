@@ -58,7 +58,7 @@ export async function get(id: number): Promise<ItemType> {
 
 export async function create(item: Exclude<ItemType, 'id'>) {
     const db = connect();
-    const result = await db.from(TABLE_NAME).insert(item).select("*").single();
+    const result = await db.from(TABLE_NAME).insert(toSnakeCase(item)).select("*").single();
 
     if (result.error) {
         throw result.error;
@@ -69,7 +69,7 @@ export async function create(item: Exclude<ItemType, 'id'>) {
 
 export async function update(id: number, user: Partial<ItemType>) {
     const db = connect();
-    const result = await db.from(TABLE_NAME).update(user).eq("id", id).select("*").single();
+    const result = await db.from(TABLE_NAME).update(toSnakeCase(user)).eq("id", id).select("*").single();
 
     if (result.error) {
         throw result.error;
