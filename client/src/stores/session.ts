@@ -47,6 +47,13 @@ export const useSessionStore = defineStore('session', () => {
     }
 
     return myApi<T>(endpoint, data, options)
+      .then((res) => {
+        const response = res as { message?: string };
+        if (response && typeof response === 'object' && 'message' in response && response.message) {
+          addMessage(response.message, 'success')
+        }
+        return res
+      })
       .catch((error) => {
         handleError(error)
         throw error
