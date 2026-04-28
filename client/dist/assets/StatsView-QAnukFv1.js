@@ -1,1 +1,0 @@
-import{d as t,c as a,a as s,b as o,o as n,S as r}from"./index-CJzbeSGD.js";const m=t({__name:"StatsView",setup(c){return(l,e)=>(n(),a("div",null,[e[0]||(e[0]=s("h1",{class:"title is-2 mb-4"},"My Stats",-1)),o(r)]))}});export{m as default};

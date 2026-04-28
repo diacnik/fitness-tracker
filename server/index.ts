@@ -1,4 +1,5 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config();
 
 import express from "express";
 import usersController from "./controllers/users";
