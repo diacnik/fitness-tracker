@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useActivityStore } from '../stores/activity'
 import { useSessionStore } from '../stores/session'
 import { useConnectionStore } from '../stores/connections'
+import type { User, DataListEnvelope } from '../../../server/types'
 import ActivityBox from './ActivityBox.vue'
 
 const activityStore = useActivityStore()
 const sessionStore = useSessionStore()
 const connectionStore = useConnectionStore()
+
+const activitiesUsers = ref<Map<number, User>>(new Map())
 // Props for filtering user/other and limiting activities shown
 const props = withDefaults(
   defineProps<{
@@ -20,13 +23,31 @@ const props = withDefaults(
   },
 )
 
-onMounted(() => {
+onMounted(async () => {
   activityStore.loadActivities()
 
   if (props.filterMode === 'connections' && sessionStore.user) {
     connectionStore.loadForUser(sessionStore.user.id)
   }
+
+  if (props.filterMode !== 'current') {
+    try {
+      const response = await sessionStore.api<DataListEnvelope<User>>('users')
+      const userMap = new Map<number, User>()
+      response.data.forEach(user => userMap.set(user.id, user))
+      activitiesUsers.value = userMap
+    } catch (e) {
+      console.error('Failed to load users for activities', e)
+    }
+  }
 })
+
+const getUserForActivity = (userId: number) => {
+  if (props.filterMode === 'current' || sessionStore.user?.id === userId) {
+    return sessionStore.user
+  }
+  return activitiesUsers.value.get(userId) || null
+}
 
 const filteredActivities = computed(() => {
   const currentUserId = sessionStore.user?.id
@@ -78,7 +99,7 @@ const emptyStateLabel = computed(() => {
           v-for="activity in filteredActivities"
           :key="activity.id"
           :activity="activity"
-          :user="sessionStore.user"
+          :user="getUserForActivity(activity.userId)"
           :show-actions="props.filterMode === 'current'"
           class="mb-4"
         />
