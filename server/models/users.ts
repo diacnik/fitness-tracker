@@ -18,7 +18,7 @@ export async function getAll(params: PagingRequest) {
 
     if (params?.search) {
         const search = params.search.toLowerCase();
-        query = query.or(`username.ilike.%${search}%`).or(`first_name.ilike.%${search}%`).or(`last_name.ilike.%${search}%`);
+        query = query.or(`username.ilike.%${search}%,first_name.ilike.%${search}%,last_name.ilike.%${search}%`);
     }
     if (params?.sortBy) {
         query = query.order(params.sortBy, { ascending: !params.descending });
@@ -35,7 +35,7 @@ export async function getAll(params: PagingRequest) {
         throw result.error;
     }
 
-    const list = result.data as ItemType[];
+    const list = result.data.map(toCamelCase) as ItemType[];
     const count = result.count ?? 0;
 
     return { list, count };

@@ -16,7 +16,7 @@ export async function getAll(params: PagingRequest) {
     let query = db.from(TABLE_NAME).select("*", { count: "estimated"});
 
     if (params?.search) {
-        query = query.or(`name.ilike.%${params.search}%`).or(`description.ilike.%${params.search}%`);
+        query = query.or(`name.ilike.%${params.search}%,description.ilike.%${params.search}%`);
     }
     if (params?.sortBy) {
         query = query.order(params.sortBy, { ascending: !params.descending });
@@ -47,13 +47,12 @@ export async function get(id: number): Promise<ItemType> {
         throw result.error;
     }
 
-    const item = result.data as ItemType | null;
-    if (!item) {
+    if (!result.data) {
         const error = { status: 404, message: "Activity not found" };
         throw error;
     }
 
-    return item as ItemType;
+    return toCamelCase(result.data) as ItemType;
 }
 
 export async function create(item: Exclude<ItemType, 'id'>) {
