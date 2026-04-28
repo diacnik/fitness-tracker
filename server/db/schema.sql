@@ -10,6 +10,18 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS connections (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    friend_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'blocked')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- Prevent a user from friending themselves or having duplicate rows
+    CONSTRAINT unique_connection UNIQUE(user_id, friend_id),
+    CONSTRAINT not_self CHECK (user_id <> friend_id)
+);
+
 CREATE TABLE IF NOT EXISTS activities (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,

@@ -22,6 +22,18 @@ export const userKeys: (keyof User)[] = [
     'role'
 ]
 
+export type Connection = {
+    id: number;
+    userId: number;
+    friendId: number;
+}
+
+export const connectionKeys: (keyof Connection)[] = [
+    'id',
+    'userId',
+    'friendId'
+];
+
 export type ActivityCategory = 'run' | 'climb' | 'bike' | 'other' | 'hike';
 
 export type Activity = {
