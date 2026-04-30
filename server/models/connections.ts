@@ -68,7 +68,7 @@ export async function get(id: number): Promise<ItemType> {
     return toCamelCase(result.data) as ItemType;
 }
 
-export async function create(item: Exclude<ItemType, 'id'>) {
+export async function create(item: Omit<ItemType, 'id'>) {
     const db = connect();
     const result = await db.from(TABLE_NAME).insert(toSnakeCase(item)).select("*").single();
 

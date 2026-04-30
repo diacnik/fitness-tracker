@@ -13,7 +13,6 @@ export type User = {
 }
 
 export const userKeys: (keyof User)[] = [
-    'id',
     'profilePicture',
     'username',
     'firstName',
@@ -29,7 +28,6 @@ export type Connection = {
 }
 
 export const connectionKeys: (keyof Connection)[] = [
-    'id',
     'userId',
     'friendId'
 ];
@@ -49,7 +47,6 @@ export type Activity = {
 }
 
 export const activityKeys: (keyof Activity)[] = [
-    'id',
     'userId',
     'date',
     'time',

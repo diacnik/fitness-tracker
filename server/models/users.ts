@@ -53,7 +53,7 @@ export async function get(id: number): Promise<ItemType> {
     return toCamelCase(result.data) as ItemType;
 }
 
-export async function login(email: string, _passowrd: string): Promise<{ token: string; user: ItemType }> {
+export async function login(email: string, _password: string): Promise<{ token: string; user: ItemType }> {
     const db = connect();
     const result = await db.from(TABLE_NAME).select("*").eq("email", email).single();
 
@@ -78,7 +78,7 @@ export async function login(email: string, _passowrd: string): Promise<{ token: 
     });
 }
 
-export async function create(user: ItemType): Promise<ItemType> {
+export async function create(user: Omit<ItemType, 'id'>): Promise<ItemType> {
     const db = connect();
     const result = await db.from(TABLE_NAME).insert(toSnakeCase(user)).select().single();
 
