@@ -154,7 +154,7 @@ const deleteActivity = () => {
       </div>
 
       <div class="activity-actions">
-        <button type="button" class="button is-link is-small" @click="saveActivity">Save</button>
+        <button type="button" class="button is-dark is-small" @click="saveActivity">Save</button>
         <button type="button" class="button is-light is-small" @click="cancelEditing">Cancel</button>
       </div>
     </template>

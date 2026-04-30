@@ -1,3 +1,4 @@
+<!-- Not currently used by app, but keeping for future use -->
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script lang="ts">
 let confirmData: any = null;
