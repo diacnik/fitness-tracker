@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getAll, get, create, update, remove, seed } from '../models/activities';
 import { Activity, DataEnvelope, DataListEnvelope } from '../types';
+import { requireAuth } from '../middleware/auth';
 
 const app = Router();
 
@@ -14,7 +15,7 @@ app.get("/", async (req, res) => {
     res.json(response);
 })
 
-.get("/count", async (req, res) => {
+.get("/count", requireAuth("admin"), async (req, res) => {
     const { count } = await getAll(req.query);
     const response: DataEnvelope<{ count: number }> = {
         data: { count },
@@ -62,7 +63,7 @@ app.get("/", async (req, res) => {
     res.json(response);
 })
 
-.post("/seed", async (_req, res) => {
+.post("/seed", requireAuth("admin"), async (_req, res) => {
     await seed();
     const response: DataEnvelope<null> = {
         data: null,

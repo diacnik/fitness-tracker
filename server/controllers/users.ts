@@ -15,7 +15,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.get("/count", async (req, res) => {
+.get("/count", requireAuth("admin"), async (req, res) => {
     const { count } = await getAll(req.query);
     const response: DataEnvelope<{ count: number }> = {
         data: { count },
@@ -61,7 +61,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.delete("/:id", async (req, res) => {
+.delete("/:id", requireAuth("admin"), async (req, res) => {
     const { id } = req.params;
     const removedUser = await remove(Number(id));
     const response: DataEnvelope<User> = {
