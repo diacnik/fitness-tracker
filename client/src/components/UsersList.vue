@@ -1,24 +1,32 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
-import { useActivityStore } from '../stores/activity'
-import { useUserStore } from '../stores/user'
-import type { User } from '../types'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useSessionStore } from '../stores/session'
+import type { User, DataEnvelope, DataListEnvelope, UserRole } from '../../../server/types'
 
-const activityStore = useActivityStore()
-const userStore = useUserStore()
+const sessionStore = useSessionStore()
+const users = ref<User[]>([])
 const editingUserId = ref<number | null>(null)
 const editForm = reactive({
   firstName: '',
   lastName: '',
   username: '',
   profilePicture: '',
-  isAdmin: false,
+  role: 'user' as UserRole,
+})
+
+onMounted(async () => {
+  try {
+    const response = await sessionStore.api<DataListEnvelope<User>>('users')
+    users.value = response.data
+  } catch (error) {
+    console.error('Failed to load users:', error)
+  }
 })
 
 const sortedUsers = computed(() => {
-  return [...userStore.users].sort((a, b) => {
-    if (a.isAdmin !== b.isAdmin) {
-      return a.isAdmin ? -1 : 1
+  return [...users.value].sort((a, b) => {
+    if (a.role !== b.role) {
+      return a.role === 'admin' ? -1 : 1
     }
 
     return `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
@@ -26,19 +34,19 @@ const sortedUsers = computed(() => {
 })
 
 const startEditing = (user: User) => {
-  editingUserId.value = user.userId
+  editingUserId.value = user.id
   editForm.firstName = user.firstName
   editForm.lastName = user.lastName
   editForm.username = user.username
   editForm.profilePicture = user.profilePicture
-  editForm.isAdmin = user.isAdmin
+  editForm.role = user.role
 }
 
 const cancelEditing = () => {
   editingUserId.value = null
 }
 
-const deleteUser = (user: User) => {
+const deleteUser = async (user: User) => {
   const confirmed = window.confirm(
     `Delete ${user.firstName} ${user.lastName} and all of their activities?`,
   )
@@ -47,15 +55,19 @@ const deleteUser = (user: User) => {
     return
   }
 
-  if (editingUserId.value === user.userId) {
+  if (editingUserId.value === user.id) {
     cancelEditing()
   }
 
-  activityStore.deleteActivitiesByUser(user.userId)
-  userStore.deleteUser(user.userId)
+  try {
+    await sessionStore.api(`users/${user.id}`, null, { method: 'DELETE' })
+    users.value = users.value.filter(u => u.id !== user.id)
+  } catch (error) {
+    console.error('Failed to delete user:', error)
+  }
 }
 
-const saveUser = (userId: number) => {
+const saveUser = async (userId: number) => {
   const firstName = editForm.firstName.trim()
   const lastName = editForm.lastName.trim()
   const username = editForm.username.trim()
@@ -65,15 +77,23 @@ const saveUser = (userId: number) => {
     return
   }
 
-  userStore.updateUser(userId, {
-    firstName,
-    lastName,
-    username,
-    profilePicture,
-    isAdmin: editForm.isAdmin,
-  })
+  try {
+    const response = await sessionStore.api<DataEnvelope<User>>(`users/${userId}`, {
+      firstName,
+      lastName,
+      username,
+      profilePicture,
+      role: editForm.role,
+    }, { method: 'PATCH' })
 
-  cancelEditing()
+    const index = users.value.findIndex(u => u.id === userId)
+    if (index !== -1) {
+      users.value[index] = response.data
+    }
+    cancelEditing()
+  } catch (error) {
+    console.error('Failed to update user:', error)
+  }
 }
 </script>
 
@@ -84,23 +104,23 @@ const saveUser = (userId: number) => {
     <ul class="users-grid">
       <li
         v-for="user in sortedUsers"
-        :key="user.userId"
-        :class="['user-card', { 'user-card-editing': editingUserId === user.userId }]"
+        :key="user.id"
+        :class="['user-card', { 'user-card-editing': editingUserId === user.id }]"
       >
         <img
-          :src="editingUserId === user.userId ? editForm.profilePicture : user.profilePicture"
+          :src="editingUserId === user.id ? editForm.profilePicture : user.profilePicture"
           :alt="`${user.firstName} ${user.lastName}`"
           class="user-avatar"
         />
 
-        <template v-if="editingUserId === user.userId">
+        <template v-if="editingUserId === user.id">
           <div class="user-editor">
             <div class="field-row">
               <div class="field">
-                <label class="label" :for="`first-name-${user.userId}`">First name</label>
+                <label class="label" :for="`first-name-${user.id}`">First name</label>
                 <div class="control">
                   <input
-                    :id="`first-name-${user.userId}`"
+                    :id="`first-name-${user.id}`"
                     v-model="editForm.firstName"
                     class="input is-small"
                     type="text"
@@ -109,10 +129,10 @@ const saveUser = (userId: number) => {
               </div>
 
               <div class="field">
-                <label class="label" :for="`last-name-${user.userId}`">Last name</label>
+                <label class="label" :for="`last-name-${user.id}`">Last name</label>
                 <div class="control">
                   <input
-                    :id="`last-name-${user.userId}`"
+                    :id="`last-name-${user.id}`"
                     v-model="editForm.lastName"
                     class="input is-small"
                     type="text"
@@ -123,10 +143,10 @@ const saveUser = (userId: number) => {
 
             <div class="field-row">
               <div class="field">
-                <label class="label" :for="`username-${user.userId}`">Username</label>
+                <label class="label" :for="`username-${user.id}`">Username</label>
                 <div class="control">
                   <input
-                    :id="`username-${user.userId}`"
+                    :id="`username-${user.id}`"
                     v-model="editForm.username"
                     class="input is-small"
                     type="text"
@@ -135,10 +155,10 @@ const saveUser = (userId: number) => {
               </div>
 
               <div class="field">
-                <label class="label" :for="`avatar-${user.userId}`">Profile picture</label>
+                <label class="label" :for="`avatar-${user.id}`">Profile picture</label>
                 <div class="control">
                   <input
-                    :id="`avatar-${user.userId}`"
+                    :id="`avatar-${user.id}`"
                     v-model="editForm.profilePicture"
                     class="input is-small"
                     type="url"
@@ -148,7 +168,7 @@ const saveUser = (userId: number) => {
             </div>
 
             <label class="checkbox is-size-7">
-              <input v-model="editForm.isAdmin" type="checkbox" />
+              <input v-model="editForm.role" type="checkbox" true-value="admin" false-value="user" />
               Admin user
             </label>
           </div>
@@ -159,11 +179,11 @@ const saveUser = (userId: number) => {
           <p class="user-username">@{{ user.username }}</p>
         </div>
 
-        <span v-if="user.isAdmin" class="tag is-warning is-light">Admin</span>
+        <span v-if="user.role === 'admin'" class="tag is-warning is-light">Admin</span>
 
         <div class="user-actions">
-          <template v-if="editingUserId === user.userId">
-            <button type="button" class="button is-small is-success" @click="saveUser(user.userId)">
+          <template v-if="editingUserId === user.id">
+            <button type="button" class="button is-small is-success" @click="saveUser(user.id)">
               Save
             </button>
             <button type="button" class="button is-small is-light" @click="cancelEditing">

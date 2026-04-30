@@ -1,19 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '../stores/user'
+import { onMounted, ref } from 'vue'
+import { useSessionStore } from '../stores/session'
+import type { User, DataListEnvelope } from '../../../server/types'
 
-const userStore = useUserStore()
-const { users, currentUser } = storeToRefs(userStore)
+const sessionStore = useSessionStore()
+const users = ref<User[]>([])
 
 const isOpen = ref(false)
+
+onMounted(async () => {
+  try {
+    const response = await sessionStore.api<DataListEnvelope<User>>('users')
+    users.value = response.data
+  } catch (error) {
+    console.error('Failed to fetch users:', error)
+  }
+})
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value
 }
 
-const handleLogin = (userId: number) => {
-  userStore.setCurrentUser(Number(userId))
+const handleLogin = (user: User) => {
+  sessionStore.user = user
   isOpen.value = false
 }
 </script>
@@ -27,19 +36,19 @@ const handleLogin = (userId: number) => {
       :aria-expanded="isOpen"
       aria-haspopup="menu"
     >
-      {{ currentUser ? `Logged in as ${currentUser.username}` : 'Login' }}
+      {{ sessionStore.user ? `Logged in as ${sessionStore.user.username}` : 'Login' }}
       <span class="caret" :class="{ open: isOpen }" aria-hidden="true">▾</span>
     </button>
 
     <ul v-if="isOpen" class="login-menu" role="menu" aria-label="Select user">
-      <li v-for="user in users" :key="user.userId" role="none">
+      <li v-for="user in users" :key="user.id" role="none">
         <button
           type="button"
           class="menu-item"
-          :class="{ active: currentUser?.userId === user.userId }"
+          :class="{ active: sessionStore.user?.id === user.id }"
           role="menuitem"
           @mousedown.prevent
-          @click.stop="handleLogin(user.userId)"
+          @click.stop="handleLogin(user)"
         >
           <img :src="user.profilePicture" :alt="`${user.username} profile picture`" class="avatar" />
           <span>{{ user.firstName }} {{ user.lastName }}</span>

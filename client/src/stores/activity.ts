@@ -1,82 +1,50 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import activitiesData from '../data/activities.json'
-import { useUserStore } from './user'
-import type { Activity } from '../types'
-
-type ActivityUpdates = Partial<Omit<Activity, 'id'>>
+import type { DataEnvelope, DataListEnvelope, Activity } from '../../../server/types'
+import useSessionStore from './session'
 
 export const useActivityStore = defineStore('activity', () => {
-  const userStore = useUserStore()
-  const activities = ref<Activity[]>(activitiesData as Activity[])
-  const users = computed(() => userStore.users)
+  const session = useSessionStore();
+  const activities = ref<Activity[]>([]);
 
-  function addActivity(newActivity: Omit<Activity, 'id'>) {
-    const nextId = activities.value.length
-      ? Math.max(...activities.value.map(activity => activity.id)) + 1
-      : 1
-
-    activities.value.unshift({
-      id: nextId,
-      ...newActivity,
-    })
+  async function loadActivities() {
+    const data = await session.api<DataListEnvelope<Activity>>('activities');
+    activities.value = data.data;
   }
 
-  function deleteActivitiesByUser(userId: number) {
-    activities.value = activities.value.filter(activity => activity.userId !== userId)
+  async function getActivity(id: number) {
+    return session.api<DataEnvelope<Activity>>(`activities/${id}`);
   }
 
-  function updateActivity(activityId: number, updates: ActivityUpdates) {
-    const activityIndex = activities.value.findIndex(activity => activity.id === activityId)
+  async function createActivity(activity: Omit<Activity, 'id'>) {
+    const data = await session.api<DataEnvelope<Activity>>('activities', activity);
+    activities.value.push(data.data);
+    return data;
+  }
 
-    if (activityIndex === -1) {
-      return false
+  async function updateActivity(id: number, activity: Omit<Activity, 'id'>) {
+    const data = await session.api<DataEnvelope<Activity>>(`activities/${id}`, activity, { method: 'PATCH' });
+    const index = activities.value.findIndex((a) => a.id === id);
+    if (index !== -1) {
+      activities.value[index] = data.data;
     }
-
-    const currentActivity = activities.value[activityIndex]
-
-    if (!currentActivity) {
-      return false
-    }
-
-    activities.value[activityIndex] = {
-      ...currentActivity,
-      ...updates,
-    }
-
-    return true
+    return data;
   }
 
-  function deleteActivity(activityId: number) {
-    const originalLength = activities.value.length
-    activities.value = activities.value.filter(activity => activity.id !== activityId)
-
-    return activities.value.length !== originalLength
+  async function deleteActivity(id: number) {
+    const data = await session.api<DataEnvelope<null>>(`activities/${id}`, null, { method: 'DELETE' });
+    const index = activities.value.findIndex((a) => a.id === id);
+    if (index !== -1) {
+      activities.value.splice(index, 1);
+    }
+    return data;
   }
-
-  const activitiesWithUsers = computed(() =>
-    activities.value
-      .map(activity => {
-        const user = users.value.find(currentUser => currentUser.userId === activity.userId)
-
-        if (!user) {
-          return null
-        }
-
-        return {
-          activity,
-          user,
-        }
-      })
-      .filter(item => item !== null)
-  )
 
   return {
     activities,
-    users,
-    activitiesWithUsers,
-    addActivity,
-    deleteActivitiesByUser,
+    loadActivities,
+    getActivity,
+    createActivity,
     updateActivity,
     deleteActivity,
   }

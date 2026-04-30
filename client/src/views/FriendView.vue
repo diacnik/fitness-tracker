@@ -16,7 +16,7 @@ import ActivitiesList from '../components/ActivitiesList.vue'
           <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
             <h1 class="title is-2 mb-0">Friends' Activities</h1>
           </div>
-          <ActivitiesList filter-mode="others" />
+          <ActivitiesList filter-mode="connections" />
         </div>
       </div>
     </div>

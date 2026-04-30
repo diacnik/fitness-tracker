@@ -1,16 +1,18 @@
 <script setup lang="ts">
 
 import { computed, ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import { useUserStore } from '../stores/user';
+import { RouterLink, useRouter } from 'vue-router';
+import { useSessionStore } from '../stores/session';
 import UserLogin from './UserLogin.vue';
 
 const isActive = ref(false);
-const userStore = useUserStore();
-const currentUser = computed(() => userStore.currentUser);
+const sessionStore = useSessionStore();
+const router = useRouter();
+const currentUser = computed(() => sessionStore.user);
 
 const logout = () => {
-  userStore.clearCurrentUser();
+  sessionStore.logout();
+  router.push('/');
 };
 
 </script>
@@ -19,7 +21,7 @@ const logout = () => {
   <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
-    <RouterLink to="/" class="navbar-item has-text-weight-semibold">
+    <RouterLink to="/home" class="navbar-item has-text-weight-semibold">
       Fitness Tracker
     </RouterLink>
 
@@ -51,7 +53,7 @@ const logout = () => {
         Connections
       </RouterLink>
 
-      <div v-if="currentUser?.isAdmin" class="navbar-item is-hoverable">
+      <div v-if="currentUser?.role === 'admin'" class="navbar-item is-hoverable">
         <RouterLink to="/admin" class="navbar-item">
           Admin
         </RouterLink>

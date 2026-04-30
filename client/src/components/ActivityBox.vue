@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useActivityStore } from '../stores/activity'
-import type { Activity, ActivityCategory, User } from '../types'
+import type { Activity, ActivityCategory, User } from '../../../server/types'
 
 const props = defineProps<{
   activity: Activity
-  user: User
+  user: User | null
   showActions?: boolean
 }>()
 
@@ -75,16 +75,10 @@ const deleteActivity = () => {
 <template>
   <div class="box activity-box">
     <template v-if="isEditing">
-      <div class="field">
+      <div v-if="props.user" class="field">
         <label class="label">User</label>
         <div class="control">
-          <div class="select is-fullwidth">
-            <select v-model.number="editForm.userId">
-              <option v-for="userOption in activityStore.users" :key="userOption.userId" :value="userOption.userId">
-                {{ userOption.firstName }} {{ userOption.lastName }} (@{{ userOption.username }})
-              </option>
-            </select>
-          </div>
+          <input class="input" type="text" :value="props.user.firstName + ' ' + props.user.lastName + ' (@' + props.user.username + ')'" disabled />
         </div>
       </div>
 
@@ -166,7 +160,7 @@ const deleteActivity = () => {
     </template>
 
     <template v-else>
-      <article class="media">
+      <article v-if="props.user" class="media">
         <div class="media-left">
           <figure class="image is-48x48">
             <img :src="props.user.profilePicture" :alt="props.user.username" class="is-rounded" />
