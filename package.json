@@ -24,6 +24,8 @@
   "devDependencies": {
     "typescript": "^5.9.3",
     "@types/express": "^5.0.6",
+    "@types/google.accounts": "^0.0.18",
+    "@types/gapi.client.auth2-V2": "^0.0.18",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^24.0.0",
     "tsx": "^4.21.0"

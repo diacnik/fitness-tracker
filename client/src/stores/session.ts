@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defineStore } from 'pinia'
 import type { User, DataEnvelope } from '../../../server/types'
 import { computed, ref } from 'vue'
 
-import { api as myApi } from '../services/myFetch'
+import { loadScript, api as myApi } from '../services/myFetch'
 
 export type FeedbackMessage = {
   type: 'success' | 'danger' | 'info'
@@ -12,12 +13,42 @@ export type FeedbackMessage = {
 export const useSessionStore = defineStore('session', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(null)
+  const googleToken = ref<string | null>(null);
 
-  async function login(email: string, password: string) {
-    const response = await myApi<DataEnvelope<{ token: string; user: User }>>('users/login', { email, password }, { method: 'POST' })
-    user.value = response.data.user
-    token.value = response.data.token
-  }
+  async function login() {
+    // void on left hand side
+    await loadScript('https://accounts.google.com/gsi/client', 'google-signin');
+
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      scope: 'email profile',
+      callback: async (response: any) => {
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        console.log ({ response });
+        googleToken.value = response.access_token;
+        await exchangeForOurToken(response.access_token);
+      },
+    });
+    tokenClient.requrestAccessToken();
+
+    function exchangeForOurToken(googleToken: string) {
+      const response = await myApi<DataEnvelope<{ token: string; user: User }>>(
+        'users/login',
+        { googleToken },
+        { method: 'POST' },
+      );
+
+      if (!response.isSuccess) {
+        addMessage(response.message || 'Login failed', 'danger');
+        return;
+      }
+
+      const { user: loggedInUser, token: authToken } = response.data;
+      token.value = authToken;
+      user.value = loggedInUser;
+    }
 
   function logout() {
     user.value = null
@@ -47,20 +78,13 @@ export const useSessionStore = defineStore('session', () => {
     }
 
     return myApi<T>(endpoint, data, options)
-      .then((res) => {
-        const response = res as { message?: string };
-        if (response && typeof response === 'object' && 'message' in response && response.message) {
-          addMessage(response.message, 'success')
-        }
-        return res
-      })
       .catch((error) => {
         handleError(error)
         throw error
       })
       .finally(() => {
         loadingCount.value--
-      })
+      });
   }
 
   return {
@@ -72,8 +96,10 @@ export const useSessionStore = defineStore('session', () => {
     api,
     token,
     logout,
-    login
+    login,
+    googleToken
   }
+}
 })
 
 export default useSessionStore
