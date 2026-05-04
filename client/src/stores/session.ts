@@ -5,6 +5,8 @@ import { computed, ref } from 'vue'
 
 import { loadScript, api as myApi } from '../services/myFetch'
 
+declare const google: any;
+
 export type FeedbackMessage = {
   type: 'success' | 'danger' | 'info'
   text: string
@@ -31,9 +33,9 @@ export const useSessionStore = defineStore('session', () => {
         await exchangeForOurToken(response.access_token);
       },
     });
-    tokenClient.requrestAccessToken();
+    tokenClient.requestAccessToken();
 
-    function exchangeForOurToken(googleToken: string) {
+    async function exchangeForOurToken(googleToken: string) {
       const response = await myApi<DataEnvelope<{ token: string; user: User }>>(
         'users/login',
         { googleToken },
@@ -49,6 +51,7 @@ export const useSessionStore = defineStore('session', () => {
       token.value = authToken;
       user.value = loggedInUser;
     }
+  }
 
   function logout() {
     user.value = null
@@ -99,7 +102,6 @@ export const useSessionStore = defineStore('session', () => {
     login,
     googleToken
   }
-}
 })
 
 export default useSessionStore

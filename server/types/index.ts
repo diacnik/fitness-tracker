@@ -3,13 +3,13 @@ export type { DataEnvelope, DataListEnvelope } from "./dataEnvelopes";
 export type UserRole = 'admin' | 'user';
 
 export type User = {
-	id: number;
-	profilePicture: string;
+	id?: number;
+	profilePicture?: string;
 	username: string;
 	firstName: string;
 	lastName: string;
     email: string;
-	role: UserRole;
+	role?: UserRole;
 }
 
 export const userKeys: (keyof User)[] = [
