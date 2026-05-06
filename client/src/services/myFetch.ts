@@ -21,38 +21,17 @@ export default function rest<T>(
     if (!res.ok) {
       if (res.headers.get('Content-Type')?.includes('application/json')) {
         return res.json().then((data) => {
-          throw new Error(data.message || 'An error occurred');
+          throw new Error(data.message || 'An error occurred')
         })
       }
       return res.text().then((text) => {
-        throw new Error(text);
+        throw new Error(text)
       })
     }
-    return res.json() as Promise<T>;
+    return res.json() as Promise<T>
   })
 }
 
 export function api<T>(endpoint: string, data?: unknown, options: RequestInit = {}) {
   return rest<T>(`${API_BASE_URL}${endpoint}`, data, options)
-}
-
-// load javascript into context
-export function loadScript(src: string, id?: string): Promise<void> {
-  return new Promise((resolve, reject) => { // asynchronous equivalents of return and throw
-    // if the script is already loaded, resolve immediately (indemnity)
-    if (id && document.getElementById(id)) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script')
-    script.src = src;
-    if (id) {
-      script.id = id;
-    }
-
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-    document.body.appendChild(script);
-  })
 }
