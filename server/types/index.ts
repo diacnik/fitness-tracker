@@ -21,15 +21,22 @@ export const userKeys: (keyof User)[] = [
     'role'
 ]
 
+export type ConnectionStatus = 'pending' | 'accepted' | 'blocked';
+
 export type Connection = {
     id: number;
-    userId: number;
-    friendId: number;
+    userLowId: number;
+    userHighId: number;
+    requestedBy: number;
+    status: ConnectionStatus;
 }
 
 export const connectionKeys: (keyof Connection)[] = [
-    'userId',
-    'friendId'
+    'id',
+    'userLowId',
+    'userHighId',
+    'requestedBy',
+    'status'
 ];
 
 export type ActivityCategory = 'run' | 'climb' | 'bike' | 'other' | 'hike';

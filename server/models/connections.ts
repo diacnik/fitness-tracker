@@ -1,4 +1,4 @@
-import { type Connection } from "../types";
+import { type Connection, type User } from "../types";
 import data1 from "../data/connections.json";
 import { PagingRequest } from "../types/dataEnvelopes";
 import { connect, toCamelCase, toSnakeCase } from "./supabase";
@@ -36,25 +36,43 @@ export async function getAll(params: PagingRequest) {
     };
 }
 
-/**
- * Specific helper to get friends for a specific user
- * This looks in both user_id and friend_id columns
- */
-export async function getForUser(userId: number) {
+export async function getUserConnections(userId: number): Promise<User[]> {
     const db = connect();
-    // Logic: find where current user is the initiator OR the recipient
-    const result = await db
+    const results = await db
         .from(TABLE_NAME)
         .select(`
-            *,
-            users!connections_user_id_fkey (id, username, first_name, last_name, profile_picture),
-            friend:users!connections_friend_id_fkey (id, username, first_name, last_name, profile_picture)
+            user_low_id,
+            user_high_id,
+            userLow:users!connections_user_low_id_fkey (
+                id,
+                username,
+                first_name,
+                last_name,
+                profile_picture,
+                email,
+                role
+            ),
+            userHigh:users!connections_user_high_id_fkey (
+                id,
+                username,
+                first_name,
+                last_name,
+                profile_picture,
+                email,
+                role
+            )
         `)
-        .or(`user_id.eq.${userId},friend_id.eq.${userId}`);
+        .or(`user_low_id.eq.${userId},user_high_id.eq.${userId}`)
+        .eq("status", "accepted");
 
-    if (result.error) throw result.error;
+    if (results.error) throw results.error;
 
-    return result.data.map(toCamelCase);
+    const users = (results.data ?? []).map((row: any) => {
+        const other = row.user_low_id === userId ? row.userHigh : row.userLow;
+        return other ? (toCamelCase(other) as User) : null;
+    });
+
+    return users.filter((user): user is User => user !== null);
 }
 
 export async function get(id: number): Promise<ItemType> {

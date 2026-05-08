@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getAll, get, getForUser, create, update, remove, seed } from "../models/connections";
-import { Connection, DataEnvelope, DataListEnvelope } from "../types";
+import { getAll, get, getUserConnections, create, update, remove, seed } from "../models/connections";
+import { Connection, User, DataEnvelope, DataListEnvelope } from "../types";
 import { requireAuth } from "../middleware/auth";
 
 const app = Router();
@@ -15,11 +15,10 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-// This endpoint allows fetching all connections for a specific user, either as the initiator (user_id) or the recipient (friend_id)
 .get("/user/:userId", async (req, res) => {
     const { userId } = req.params;
-    const list = await getForUser(Number(userId));
-    const response: DataListEnvelope<any> = {
+    const list = await getUserConnections(Number(userId));
+    const response: DataListEnvelope<User> = {
         data: list,
         isSuccess: true,
         total: list.length,
@@ -61,7 +60,7 @@ app.get("/", async (req, res) => {
     const response: DataEnvelope<Connection> = {
         data: removedConnection as Connection,
         isSuccess: true,
-        message: `Connection between user ${removedConnection.userId} and ${removedConnection.friendId} has been removed.`,
+        message: `Connection between user ${removedConnection.userLowId} and ${removedConnection.userHighId} has been removed.`,
     }
     res.send(response);
 })

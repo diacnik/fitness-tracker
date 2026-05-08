@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import UserSearch from '@/components/UserSearch.vue';
 import ActivitiesList from '../components/ActivitiesList.vue'
+import ConnectionsList from '@/components/ConnectionsList.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+function openUserProfile(userId: number) {
+  void router.push({ name: 'user', params: { id: String(userId) } })
+}
 
 </script>
 
@@ -10,6 +18,7 @@ import ActivitiesList from '../components/ActivitiesList.vue'
       <div class="friends-layout">
         <div class="search-column">
           <UserSearch />
+          <ConnectionsList @select-user="openUserProfile" />
         </div>
 
         <div class="activities-column">

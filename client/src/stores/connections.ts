@@ -1,10 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { DataEnvelope, DataListEnvelope, Connection } from '../../../server/types'
+import type { DataEnvelope, DataListEnvelope, Connection, User } from '../../../server/types'
 import useSessionStore from './session'
 
 export const useConnectionStore = defineStore('connection', () => {
   const session = useSessionStore()
+  const userConnections = ref<User[]>([])
   const connections = ref<Connection[]>([])
 
   async function loadConnections() {
@@ -13,9 +14,9 @@ export const useConnectionStore = defineStore('connection', () => {
   }
 
   // Load connections for a specific user (either as sender or recipient)
-  async function loadForUser(userId: number) {
-    const data = await session.api<DataListEnvelope<Connection>>(`connections/user/${userId}`)
-    connections.value = data.data
+  async function loadUserConnections(userId: number) {
+    const data = await session.api<DataListEnvelope<User>>(`connections/user/${userId}`)
+    userConnections.value = data.data
   }
 
   async function getConnection(id: number) {
@@ -48,8 +49,9 @@ export const useConnectionStore = defineStore('connection', () => {
 
   return {
     connections,
+    userConnections,
     loadConnections,
-    loadForUser,
+    loadUserConnections,
     getConnection,
     createConnection,
     updateConnection,
