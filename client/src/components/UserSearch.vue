@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useSessionStore } from '../stores/session'
+import { useConnectionStore } from '../stores/connections'
 import type { User, DataListEnvelope } from '../../../server/types'
 
 const sessionStore = useSessionStore()
+const connectionStore = useConnectionStore()
 
 const query = ref('')
 const filteredUsers = ref<User[]>([])
+const connectingUserId = ref<number | null>(null)
 
 const normalizedQuery = computed(() => query.value.trim().toLowerCase())
 
@@ -33,6 +36,30 @@ const hasQuery = computed(() => normalizedQuery.value.length > 0)
 
 const clearQuery = () => {
   query.value = ''
+}
+
+const connectUser = async (user: User) => {
+  const currentUser = sessionStore.user
+  if (!currentUser || connectingUserId.value) return
+  if (currentUser.id === user.id) return
+
+  const userLowId = Math.min(currentUser.id, user.id)
+  const userHighId = Math.max(currentUser.id, user.id)
+
+  try {
+    connectingUserId.value = user.id
+    await connectionStore.createConnection({
+      userLowId,
+      userHighId,
+      requestedBy: currentUser.id,
+      status: 'accepted',
+    })
+    await connectionStore.loadUserConnections(currentUser.id)
+  } catch (e) {
+    console.error('Failed to create connection:', e)
+  } finally {
+    connectingUserId.value = null
+  }
 }
 </script>
 
@@ -68,6 +95,14 @@ const clearQuery = () => {
           <p class="username">@{{ user.username }}</p>
         </div>
         <span v-if="String(user.role).toLowerCase() === 'admin'" class="tag is-warning is-light">Admin</span>
+        <button
+          type="button"
+          class="button is-small is-light connect-button"
+          :disabled="!sessionStore.user || connectingUserId === user.id || sessionStore.user?.id === user.id"
+          @click="connectUser(user)"
+        >
+          {{ connectingUserId === user.id ? 'Connecting...' : 'Connect' }}
+        </button>
       </li>
     </ul>
 

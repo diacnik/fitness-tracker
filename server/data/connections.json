@@ -21,7 +21,7 @@
     "user_low_id": 1,
     "user_high_id": 4,
     "requested_by": 4,
-    "status": "pending"
+    "status": "accepted"
   },
   {
     "user_low_id": 2,
@@ -33,6 +33,6 @@
     "user_low_id": 3,
     "user_high_id": 5,
     "requested_by": 3,
-    "status": "pending"
+    "status": "accepted"
   }
 ]
