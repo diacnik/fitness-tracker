@@ -1,32 +1,38 @@
 [
   {
-    "user_id": 1,
-    "friend_id": 2,
+    "user_low_id": 1,
+    "user_high_id": 2,
+    "requested_by": 1,
     "status": "accepted"
   },
   {
-    "user_id": 1,
-    "friend_id": 3,
+    "user_low_id": 1,
+    "user_high_id": 3,
+    "requested_by": 1,
     "status": "accepted"
   },
   {
-    "user_id": 2,
-    "friend_id": 3,
+    "user_low_id": 2,
+    "user_high_id": 3,
+    "requested_by": 2,
     "status": "accepted"
   },
   {
-    "user_id": 4,
-    "friend_id": 1,
+    "user_low_id": 1,
+    "user_high_id": 4,
+    "requested_by": 4,
     "status": "pending"
   },
   {
-    "user_id": 5,
-    "friend_id": 2,
+    "user_low_id": 2,
+    "user_high_id": 5,
+    "requested_by": 5,
     "status": "accepted"
   },
   {
-    "user_id": 3,
-    "friend_id": 5,
+    "user_low_id": 3,
+    "user_high_id": 5,
+    "requested_by": 3,
     "status": "pending"
   }
 ]

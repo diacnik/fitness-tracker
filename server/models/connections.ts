@@ -10,9 +10,14 @@ const data = {
     items: data1,
 };
 
-/**
- * Get all connections (Admin view or debugging)
- */
+// Helper function to ensure lower userId is stored in user_low_id column
+function normalizeUserPair(userAId: number, userBId: number) {
+    const user_low_id = Math.min(userAId, userBId);
+    const user_high_id = Math.max(userAId, userBId);
+
+    return { user_low_id, user_high_id };
+}
+
 export async function getAll(params: PagingRequest) {
     const db = connect();
     let query = db.from(TABLE_NAME).select("*", { count: "estimated" });
@@ -88,7 +93,13 @@ export async function get(id: number): Promise<ItemType> {
 
 export async function create(item: Omit<ItemType, 'id'>) {
     const db = connect();
-    const result = await db.from(TABLE_NAME).insert(toSnakeCase(item)).select("*").single();
+    const { user_low_id, user_high_id } = normalizeUserPair(item.userLowId, item.userHighId);
+    const connectedUsers = {
+        ...item,
+        userLowId: user_low_id,
+        userHighId: user_high_id,
+    };
+    const result = await db.from(TABLE_NAME).insert(toSnakeCase(connectedUsers)).select("*").single();
 
     if (result.error) throw result.error;
 
