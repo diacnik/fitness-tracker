@@ -27,7 +27,7 @@ onMounted(async () => {
   activityStore.loadActivities()
 
   if (props.filterMode === 'connections' && sessionStore.user) {
-    connectionStore.loadForUser(sessionStore.user.id)
+    connectionStore.loadUserConnections(sessionStore.user.id)
   }
 
   if (props.filterMode !== 'current') {
@@ -61,9 +61,7 @@ const filteredActivities = computed(() => {
   if (props.filterMode === 'others') {
     activities = activities.filter((activity) => activity.userId !== currentUserId)
   } else if (props.filterMode === 'connections') {
-    const connectionIds = new Set(
-      connectionStore.connections.map(c => c.userId === currentUserId ? c.friendId : c.userId)
-    )
+    const connectionIds = new Set(connectionStore.userConnections.map((user) => user.id))
     activities = activities.filter((activity) => connectionIds.has(activity.userId))
   } else {
     activities = activities.filter((activity) => activity.userId === currentUserId)

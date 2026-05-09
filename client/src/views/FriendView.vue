@@ -18,6 +18,10 @@ function openUserProfile(userId: number) {
       <div class="friends-layout">
         <div class="search-column">
           <UserSearch />
+          <div class="connections-header">
+            <h2 class="title is-5 mb-2">Your Connections</h2>
+            <hr class="connections-separator" />
+          </div>
           <ConnectionsList @select-user="openUserProfile" />
         </div>
 
@@ -48,6 +52,14 @@ function openUserProfile(userId: number) {
 .search-column :deep(.user-search),
 .activities-column :deep(.activity-feed) {
   max-width: none;
+  margin: 0;
+}
+
+.connections-header {
+  margin-top: 1.5rem;
+}
+
+.connections-separator {
   margin: 0;
 }
 
