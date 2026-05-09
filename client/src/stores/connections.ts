@@ -38,6 +38,16 @@ export const useConnectionStore = defineStore('connection', () => {
     return data
   }
 
+  // Helper function to block a connection and remove it from userConnections
+  async function blockConnection(id: number) {
+    const data = await updateConnection(id, { status: 'blocked' })
+    const userIndex = userConnections.value.findIndex((user) => user.connectionId === id)
+    if (userIndex !== -1) {
+      userConnections.value.splice(userIndex, 1)
+    }
+    return data
+  }
+
   async function deleteConnection(id: number) {
     const data = await session.api<DataEnvelope<null>>(`connections/${id}`, null, { method: 'DELETE' })
     const index = connections.value.findIndex((c) => c.id === id)
@@ -59,6 +69,7 @@ export const useConnectionStore = defineStore('connection', () => {
     getConnection,
     createConnection,
     updateConnection,
+    blockConnection,
     deleteConnection,
   }
 })

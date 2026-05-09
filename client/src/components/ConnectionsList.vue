@@ -20,6 +20,7 @@ const connectionStore = useConnectionStore()
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 const disconnectingId = ref<number | null>(null)
+const blockingId = ref<number | null>(null)
 
 async function load() {
   const currentUser = sessionStore.user
@@ -65,6 +66,20 @@ async function disconnectUser(user: ConnectedUser) {
     error.value = err?.message ?? String(err)
   } finally {
     disconnectingId.value = null
+  }
+}
+
+async function blockUser(user: ConnectedUser) {
+  if (!sessionStore.user) return
+
+  try {
+    blockingId.value = user.connectionId
+    error.value = null
+    await connectionStore.blockConnection(user.connectionId)
+  } catch (err: any) {
+    error.value = err?.message ?? String(err)
+  } finally {
+    blockingId.value = null
   }
 }
 
@@ -152,8 +167,10 @@ onMounted(() => {
               <button
                 type="button"
                 class="button is-small is-danger is-light"
+                :disabled="blockingId === user.connectionId"
+                @click="blockUser(user)"
               >
-                Block
+                {{ blockingId === user.connectionId ? 'Blocking…' : 'Block' }}
               </button>
             </div>
           </li>
