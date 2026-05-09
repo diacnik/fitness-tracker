@@ -10,6 +10,7 @@ const connectionStore = useConnectionStore()
 const query = ref('')
 const filteredUsers = ref<User[]>([])
 const connectingUserId = ref<number | null>(null)
+const connectionsReady = ref(false)
 
 const normalizedQuery = computed(() => query.value.trim().toLowerCase())
 
@@ -36,6 +37,29 @@ const hasQuery = computed(() => normalizedQuery.value.length > 0)
 
 const clearQuery = () => {
   query.value = ''
+}
+
+watch(
+  () => sessionStore.user?.id,
+  async (userId) => {
+    if (!userId) {
+      connectionsReady.value = false
+      return
+    }
+
+    try {
+      await connectionStore.loadUserConnections(userId)
+      connectionsReady.value = true
+    } catch (e) {
+      console.error('Failed to load connections:', e)
+      connectionsReady.value = false
+    }
+  },
+  { immediate: true },
+)
+
+const isConnectedUser = (user: User) => {
+  return connectionStore.userConnections.some((connectedUser) => connectedUser.id === user.id)
 }
 
 const connectUser = async (user: User) => {
@@ -98,10 +122,16 @@ const connectUser = async (user: User) => {
         <button
           type="button"
           class="button is-small is-light connect-button"
-          :disabled="!sessionStore.user || connectingUserId === user.id || sessionStore.user?.id === user.id"
+          :disabled="!sessionStore.user || connectingUserId === user.id || sessionStore.user?.id === user.id || (connectionsReady && isConnectedUser(user))"
           @click="connectUser(user)"
         >
-          {{ connectingUserId === user.id ? 'Connecting...' : 'Connect' }}
+          {{
+            connectingUserId === user.id
+              ? 'Connecting...'
+              : connectionsReady && isConnectedUser(user)
+                ? 'Connected'
+                : 'Connect'
+          }}
         </button>
       </li>
     </ul>
