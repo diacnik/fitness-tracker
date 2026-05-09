@@ -1,4 +1,4 @@
-import { type Connection, type User } from "../types";
+import { type Connection, type ConnectedUser } from "../types";
 import data1 from "../data/connections.json";
 import { PagingRequest } from "../types/dataEnvelopes";
 import { connect, toCamelCase, toSnakeCase } from "./supabase";
@@ -41,11 +41,12 @@ export async function getAll(params: PagingRequest) {
     };
 }
 
-export async function getUserConnections(userId: number): Promise<User[]> {
+export async function getUserConnections(userId: number): Promise<ConnectedUser[]> {
     const db = connect();
     const results = await db
         .from(TABLE_NAME)
         .select(`
+            id,
             user_low_id,
             user_high_id,
             userLow:users!connections_user_low_id_fkey (
@@ -74,10 +75,13 @@ export async function getUserConnections(userId: number): Promise<User[]> {
 
     const users = (results.data ?? []).map((row: any) => {
         const other = row.user_low_id === userId ? row.userHigh : row.userLow;
-        return other ? (toCamelCase(other) as User) : null;
+        return other ? ({
+            ...(toCamelCase(other) as ConnectedUser),
+            connectionId: row.id,
+        }) : null;
     });
 
-    return users.filter((user): user is User => user !== null);
+    return users.filter((user): user is ConnectedUser => user !== null);
 }
 
 export async function get(id: number): Promise<ItemType> {

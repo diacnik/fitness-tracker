@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { DataEnvelope, DataListEnvelope, Connection, User } from '../../../server/types'
+import type { DataEnvelope, DataListEnvelope, Connection, ConnectedUser } from '../../../server/types'
 import useSessionStore from './session'
 
 export const useConnectionStore = defineStore('connection', () => {
   const session = useSessionStore()
-  const userConnections = ref<User[]>([])
+  const userConnections = ref<ConnectedUser[]>([])
   const connections = ref<Connection[]>([])
 
   async function loadConnections() {
@@ -15,7 +15,7 @@ export const useConnectionStore = defineStore('connection', () => {
 
   // Load connections for a specific user (either as sender or recipient)
   async function loadUserConnections(userId: number) {
-    const data = await session.api<DataListEnvelope<User>>(`connections/user/${userId}`)
+    const data = await session.api<DataListEnvelope<ConnectedUser>>(`connections/user/${userId}`)
     userConnections.value = data.data
   }
 
@@ -43,6 +43,10 @@ export const useConnectionStore = defineStore('connection', () => {
     const index = connections.value.findIndex((c) => c.id === id)
     if (index !== -1) {
       connections.value.splice(index, 1)
+    }
+    const userIndex = userConnections.value.findIndex((user) => user.connectionId === id)
+    if (userIndex !== -1) {
+      userConnections.value.splice(userIndex, 1)
     }
     return data
   }

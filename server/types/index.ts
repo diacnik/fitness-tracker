@@ -12,6 +12,11 @@ export type User = {
 	role: UserRole;
 }
 
+// A user who is currently connected to the logged in user
+export type ConnectedUser = User & {
+    connectionId: number;
+}
+
 export const userKeys: (keyof User)[] = [
     'profilePicture',
     'username',

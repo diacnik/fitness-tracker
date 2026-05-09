@@ -3,7 +3,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useSessionStore } from '@/stores/session'
 import { useConnectionStore } from '@/stores/connections'
-import type { User } from '../../../server/types'
+import type { ConnectedUser, User } from '../../../server/types'
 
 const props = defineProps<{
   limit?: number
@@ -19,6 +19,7 @@ const connectionStore = useConnectionStore()
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
+const disconnectingId = ref<number | null>(null)
 
 async function load() {
   const currentUser = sessionStore.user
@@ -51,6 +52,20 @@ function onRetry() {
 
 function selectUser(user: User) {
   emit('select-user', user.id)
+}
+
+async function disconnectUser(user: ConnectedUser) {
+  if (!sessionStore.user) return
+
+  try {
+    disconnectingId.value = user.connectionId
+    error.value = null
+    await connectionStore.deleteConnection(user.connectionId)
+  } catch (err: any) {
+    error.value = err?.message ?? String(err)
+  } finally {
+    disconnectingId.value = null
+  }
 }
 
 onMounted(() => {
@@ -128,8 +143,10 @@ onMounted(() => {
               <button
                 type="button"
                 class="button is-small"
+                :disabled="disconnectingId === user.connectionId"
+                @click="disconnectUser(user)"
               >
-                Disconnect
+                {{ disconnectingId === user.connectionId ? 'Disconnecting…' : 'Disconnect' }}
               </button>
 
               <button
