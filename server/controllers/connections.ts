@@ -65,7 +65,7 @@ app.get("/", async (req, res) => {
     res.send(response);
 })
 
-.post("/seed", requireAuth("admin"), async (_req, res) => {
+.post("/seed", async (_req, res) => {
     const count = await seed();
     const response: DataEnvelope<number | null> = {
         data: count,

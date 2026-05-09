@@ -63,7 +63,7 @@ app.get("/", async (req, res) => {
     res.json(response);
 })
 
-.post("/seed", requireAuth("admin"), async (_req, res) => {
+.post("/seed", async (_req, res) => {
     await seed();
     const response: DataEnvelope<null> = {
         data: null,
