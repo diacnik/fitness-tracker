@@ -103,8 +103,7 @@ const logout = () => {
 }
 
 .navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown,
-.navbar-item.has-dropdown:has(.navbar-link.router-link-active) .navbar-dropdown,
-.navbar-item.has-dropdown:has(.navbar-dropdown .router-link-active) .navbar-dropdown {
+.navbar-item.has-dropdown.is-hoverable:focus-within .navbar-dropdown {
   display: block;
 }
 
