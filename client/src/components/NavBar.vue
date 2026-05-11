@@ -71,13 +71,7 @@ const logout = () => {
             />
             <span class="current-user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
           </div>
-          <!-- Login/Sign up buttons not currently in use, but keeping for future use -->
-          <a v-if="!currentUser" class="button is-link">
-            <strong>Sign up</strong>
-          </a>
-
           <UserLogin v-if="!currentUser" />
-
           <button v-else type="button" class="button is-light" @click="logout">
             Log out
           </button>
