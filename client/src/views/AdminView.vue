@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import UsersList from '@/components/UsersList.vue'
 import AdminConnectionsList from '@/components/AdminConnectionsList.vue'
+import AdminActivitiesList from '@/components/AdminActivitiesList.vue'
 </script>
 
 <template>
@@ -13,6 +14,9 @@ import AdminConnectionsList from '@/components/AdminConnectionsList.vue'
     </div>
     <div class="admin-column">
       <AdminConnectionsList />
+    </div>
+    <div class="admin-column">
+      <AdminActivitiesList />
     </div>
   </section>
 </template>
