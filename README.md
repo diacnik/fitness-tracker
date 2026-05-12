@@ -4,6 +4,8 @@ Welcome to Fitness Tracker, a full-stack web application designed to help users 
 
 This project was developed as a core requirement for CPS 493 Web Server Programming.
 
+You can view the web app here: [Fitness Tracker](https://fitness-tracker-fkgo.onrender.com)
+
 ## 📝 Project Overview
 
 The core mission of the platform is to provide a seamless, intuitive experience for anyone—regardless of their experience or fitness level—to quantify and track their exercise habits.
