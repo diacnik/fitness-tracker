@@ -7,9 +7,14 @@ export const useActivityStore = defineStore('activity', () => {
   const session = useSessionStore();
   const activities = ref<Activity[]>([]);
 
-  async function loadActivities() {
-    const data = await session.api<DataListEnvelope<Activity>>('activities');
-    activities.value = data.data;
+  async function loadActivities(page = 1, pageSize = 10, append = false) {
+    const data = await session.api<DataListEnvelope<Activity>>(`activities?page=${page}&pageSize=${pageSize}`);
+    if (append) {
+      activities.value.push(...data.data);
+    } else {
+      activities.value = data.data;
+    }
+    return data.data;
   }
 
   async function getActivity(id: number) {

@@ -4,6 +4,8 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useActivityStore } from '@/stores/activity'
 import { useSessionStore } from '@/stores/session'
 import type { Activity, ActivityCategory, DataListEnvelope, User } from '../../../server/types'
+import { useInfiniteScroll } from '@vueuse/core'
+
 
 type ActivityRow = Activity & {
   userName: string
@@ -29,13 +31,45 @@ const editForm = reactive({
   image: '',
 })
 
+const page = ref(1)
+const pageSize = ref(10)
+const hasMore = ref(true)
+const isFetchingMore = ref(false)
+
+const userActivities = ref<HTMLElement | null>(null)
+const { reset } = useInfiniteScroll(
+  userActivities,
+  async () => {
+    if (!hasMore.value || isFetchingMore.value) return
+    if (!sessionStore.user) return
+
+    isFetchingMore.value = true
+    const nextPage = page.value + 1
+    try {
+      const data = await activityStore.loadActivities(nextPage, pageSize.value, true)
+      hasMore.value = data.length >= pageSize.value
+      page.value = nextPage
+    } finally {
+      isFetchingMore.value = false
+    }
+  }
+)
+
+function resetList() {
+  reset()
+  if (userActivities.value) {
+    userActivities.value.scrollTop = 0
+  }
+}
+
 async function loadUsers() {
   const response = await sessionStore.api<DataListEnvelope<User>>('users')
   users.value = response.data
 }
 
 async function loadActivities() {
-  await activityStore.loadActivities()
+  const data = await activityStore.loadActivities(page.value, pageSize.value, false)
+  hasMore.value = data.length >= pageSize.value
 }
 
 async function load() {
@@ -44,6 +78,9 @@ async function load() {
   try {
     isLoading.value = true
     error.value = null
+    page.value = 1
+    hasMore.value = true
+    resetList()
     await Promise.all([loadActivities(), loadUsers()])
   } catch (err: any) {
     error.value = err?.message ?? String(err)
@@ -167,7 +204,11 @@ onMounted(() => {
         </button>
       </div>
 
-      <div v-else>
+      <div
+        v-else
+        class="table-scroll"
+        ref="userActivities"
+      >
         <div
           v-if="activityRows.length === 0"
           class="empty"
@@ -327,6 +368,11 @@ onMounted(() => {
 
 .admin-activities-table {
   margin-top: 1rem;
+}
+
+.table-scroll {
+  max-height: 70vh;
+  overflow: auto;
 }
 
 .activity-type {
