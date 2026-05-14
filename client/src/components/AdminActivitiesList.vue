@@ -35,10 +35,11 @@ const page = ref(1)
 const pageSize = ref(10)
 const hasMore = ref(true)
 const isFetchingMore = ref(false)
+const totalActivities = ref(0)
 
-const userActivities = ref<HTMLElement | null>(null)
+const userActivitiesTable = ref<HTMLElement | null>(null)
 const { reset } = useInfiniteScroll(
-  userActivities,
+  userActivitiesTable,
   async () => {
     if (!hasMore.value || isFetchingMore.value) return
     if (!sessionStore.user) return
@@ -47,7 +48,8 @@ const { reset } = useInfiniteScroll(
     const nextPage = page.value + 1
     try {
       const data = await activityStore.loadActivities(nextPage, pageSize.value, true)
-      hasMore.value = data.length >= pageSize.value
+      totalActivities.value = data.total
+      hasMore.value = activityStore.activities.length < data.total
       page.value = nextPage
     } finally {
       isFetchingMore.value = false
@@ -57,8 +59,8 @@ const { reset } = useInfiniteScroll(
 
 function resetList() {
   reset()
-  if (userActivities.value) {
-    userActivities.value.scrollTop = 0
+  if (userActivitiesTable.value) {
+    userActivitiesTable.value.scrollTop = 0
   }
 }
 
@@ -69,7 +71,8 @@ async function loadUsers() {
 
 async function loadActivities() {
   const data = await activityStore.loadActivities(page.value, pageSize.value, false)
-  hasMore.value = data.length >= pageSize.value
+  totalActivities.value = data.total
+  hasMore.value = activityStore.activities.length < data.total
 }
 
 async function load() {
@@ -107,6 +110,10 @@ const activityRows = computed<ActivityRow[]>(() => {
 })
 
 function onRetry() {
+  void load()
+}
+
+function resetActivities() {
   void load()
 }
 
@@ -176,7 +183,22 @@ onMounted(() => {
 
 <template>
   <section class="admin-activities">
-    <h2 class="title is-4">All Activities</h2>
+    <div class="header-row">
+      <div class="header-title">
+        <h2 class="title is-4">All Activities</h2>
+        <span class="viewing-label">
+          Viewing {{ activityStore.activities.length }} of {{ totalActivities }}
+        </span>
+      </div>
+      <button
+        type="button"
+        class="button is-small is-light"
+        :disabled="isLoading || isFetchingMore"
+        @click="resetActivities"
+      >
+        Reset list
+      </button>
+    </div>
 
     <div
       v-if="!sessionStore.user"
@@ -207,7 +229,7 @@ onMounted(() => {
       <div
         v-else
         class="table-scroll"
-        ref="userActivities"
+        ref="userActivitiesTable"
       >
         <div
           v-if="activityRows.length === 0"
@@ -347,6 +369,14 @@ onMounted(() => {
             </template>
           </tbody>
         </table>
+        <!-- Paging Loader Animation and Message -->
+        <div
+          v-if="isFetchingMore && hasMore"
+          class="paging-loader"
+        >
+          <span class="loader"></span>
+          <span>Loading more activities...</span>
+        </div>
       </div>
     </div>
   </section>
@@ -356,6 +386,24 @@ onMounted(() => {
 .admin-activities {
   max-width: 960px;
   margin: 0 auto;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.viewing-label {
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .loading,
@@ -383,6 +431,25 @@ onMounted(() => {
   display: inline-flex;
   gap: 0.5rem;
 }
+
+.paging-loader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.25rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.paging-loader .loader {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #ddd;
+  border-top-color: #777;
+  border-radius: 999px;
+  animation: spin 0.8s linear infinite;
+}
+
 
 .activity-editor-row {
   background: var(--bulma-scheme-main-bis, #f7f7f7);
@@ -414,4 +481,11 @@ onMounted(() => {
     justify-content: flex-start;
   }
 }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 </style>

@@ -15,7 +15,7 @@ import AdminActivitiesList from '@/components/AdminActivitiesList.vue'
     <div class="admin-column">
       <AdminConnectionsList />
     </div>
-    <div class="admin-column">
+    <div class="admin-column admin-column--full">
       <AdminActivitiesList />
     </div>
   </section>
@@ -37,6 +37,10 @@ import AdminActivitiesList from '@/components/AdminActivitiesList.vue'
 
 .admin-column {
   min-width: 0;
+}
+
+.admin-column--full {
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 1024px) {

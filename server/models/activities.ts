@@ -22,8 +22,8 @@ export async function getAll(params: PagingRequest) {
         query = query.order(params.sortBy, { ascending: !params.descending });
     }
 
-    const page = params?.page ?? 1;
-    const pageSize = params?.pageSize ?? 10;
+    const page = params?.page ? Number(params.page) : 1;
+    const pageSize = params?.pageSize ? Number(params.pageSize) : 10;
     const start = (page - 1) * pageSize;
     query = query.range(start, start + pageSize - 1);
 
